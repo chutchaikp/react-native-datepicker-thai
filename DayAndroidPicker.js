@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -11,22 +11,43 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const DayAndroidPicker = (props) => {
-  const { onIndexChange, itemHeight, fontSize } = props;
+const y = _.range(1, 32);
+const DAYS = ['', '', '', ...y, '', '', ''];
 
+const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {
+  const flatlistRef = useRef();
+
+  const [dayOfMonth, setDayOfMonth] = useState(1);
   const [itemWidth, setItemWidth] = useState(50);
+  const [items, setItems] = useState(DAYS);
 
-  const [items, setItems] = useState(() => {
-    const y = _.range(1, 32);
-    return ['', '', '', ...y, '', '', ''];
-  });
+  useEffect(() => {
+    try {
+      if (!_.isDate(date)) {
+        return;
+      }
+
+      const _date = date.getDate();
+      if (_date !== dayOfMonth) {
+        setDayOfMonth(_date);
+        const index = items.indexOf(_date);
+        scrollToIndex(index - 3);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [date]);
+
+  // useEffect(() => {
+  //   console.log('useEffect[dayOfMonth]', dayOfMonth);
+  // }, [dayOfMonth]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const momentumScrollEnd = (event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    console.log(index, items[index + 3]);
+    onIndexChanged(items[index + 3]);
   };
 
   const renderItem = ({ item, index }) => {
@@ -69,6 +90,15 @@ const DayAndroidPicker = (props) => {
     }
   };
 
+  const scrollToIndex = (index) => {
+    if (index && flatlistRef.current.scrollToIndex) {
+      console.log('scroll to index called !');
+      setTimeout(() => {
+        flatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 50);
+    }
+  };
+
   try {
     return (
       <View
@@ -82,12 +112,12 @@ const DayAndroidPicker = (props) => {
             ...styles.container,
             height: itemHeight * 7,
             zIndex: 100,
-            // backgroundColor: 'blue',
             padding: 0,
             margin: 0,
           }}
         >
           <Animated.FlatList
+            ref={flatlistRef}
             data={items}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
@@ -123,7 +153,7 @@ const DayAndroidPicker = (props) => {
   } catch (error) {
     console.log(error);
   }
-};
+});
 
 const styles = StyleSheet.create({
   com: {
@@ -131,7 +161,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    // height: 200,
     padding: 0,
     margin: 0,
   },
@@ -141,26 +170,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 0,
     margin: 0,
-    // alignItems: 'center',
-    // alignContent: 'center',
-    // marginTop: StatusBar.currentHeight || 0,
-    // backgroundColor: 'green',
-    // height: 200,
   },
-  // item: {
-  //   backgroundColor: '#f9c2ff',
-  //   padding: 20,
-  //   marginVertical: 8,
-  //   marginHorizontal: 16,
-  // },
   title: {
     fontSize: 32,
   },
   pickerItem: {
-    // fontWeight: '600',
     textAlign: 'center',
     color: '#000',
-    borderColor: 'red',
   },
   indicatorHolder: {
     position: 'absolute',
@@ -174,7 +190,6 @@ const styles = StyleSheet.create({
   animatedContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'blue',
   },
 });
 

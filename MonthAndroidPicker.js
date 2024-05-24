@@ -93,6 +93,7 @@ const MonthAndroidPicker = (props) => {
         style={{
           ...styles.com,
           height: itemHeight * 7,
+          // backgroundColor: '#1ff',
         }}
       >
         <SafeAreaView
@@ -178,7 +179,7 @@ const styles = StyleSheet.create({
     // fontWeight: '600',
     textAlign: 'center',
     color: '#000',
-    borderColor: 'red',
+    // borderColor: 'red',
   },
   indicatorHolder: {
     position: 'absolute',

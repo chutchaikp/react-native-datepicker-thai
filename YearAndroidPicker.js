@@ -76,6 +76,9 @@ const YearAndroidPicker = (props) => {
         style={{
           ...styles.com,
           height: itemHeight * 7,
+          padding: 0,
+          margin: 0,
+          // backgroundColor: '#1f1f',
         }}
       >
         <SafeAreaView
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
     // fontWeight: '600',
     textAlign: 'center',
     color: '#000',
-    borderColor: 'red',
+    // borderColor: 'red',
   },
   indicatorHolder: {
     position: 'absolute',
