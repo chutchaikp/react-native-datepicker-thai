@@ -11,32 +11,15 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const MonthAndroidPicker = (props) => {
+const YearAndroidPicker = (props) => {
   const { onIndexChange, itemHeight, fontSize } = props;
 
-  const [itemWidth, setItemWidth] = useState(150);
+  const [itemWidth, setItemWidth] = useState(100);
 
   const [items, setItems] = useState(() => {
-    return [
-      '',
-      '',
-      '',
-      'มกราคม.',
-      'กุมภาพันธ์.',
-      'มีนาคม.',
-      'เมษายน.',
-      'พฤษภาคม.',
-      'มิถุนายน.',
-      'กรกฎาคม.',
-      'สิงหาคม.',
-      'กันยายน.',
-      'ตุลาคม.',
-      'พฤศจิกายน.',
-      'ธันวาคม',
-      '',
-      '',
-      '',
-    ];
+    const fy = new Date().getFullYear();
+    const y = _.range(fy - 100 + 543, fy + 543 + 1);
+    return ['', '', '', ...y, '', '', ''];
   });
 
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -196,21 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MonthAndroidPicker;
-
-// const DATA = [
-//   {
-//     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-//     title: 'First Item',
-//   },
-//   {
-//     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-//     title: 'Second Item',
-//   },
-// ];
-
-// const Item = ({ title }) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>{title}</Text>
-//   </View>
-// );
+export default YearAndroidPicker;

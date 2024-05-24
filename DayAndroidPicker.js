@@ -1,14 +1,22 @@
 import { useRef, useState } from 'react';
-import { Animated, FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+  StatusBar,
+  Animated,
+} from 'react-native';
 import _ from 'lodash';
 
-const DayPicker = (props) => {
+const DayAndroidPicker = (props) => {
   const { onIndexChange, itemHeight, fontSize } = props;
 
-  const [itemWidth, setItemWidth] = useState(100);
+  const [itemWidth, setItemWidth] = useState(50);
 
   const [items, setItems] = useState(() => {
-    const fy = new Date().getFullYear();
     const y = _.range(1, 32);
     return ['', '', '', ...y, '', '', ''];
   });
@@ -18,7 +26,7 @@ const DayPicker = (props) => {
   const momentumScrollEnd = (event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    console.log(index, items[index + 1]);
+    console.log(index, items[index + 3]);
   };
 
   const renderItem = ({ item, index }) => {
@@ -40,7 +48,17 @@ const DayPicker = (props) => {
 
       return (
         <Animated.View
-          style={[{ height: itemHeight, transform: [{ scale }] }, styles.animatedContainer]}
+          style={[
+            {
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: itemHeight,
+              width: itemWidth,
+              transform: [{ scale }],
+            },
+            styles.animatedContainer,
+          ]}
         >
           <Text style={{ ...styles.pickerItem, fontSize }}>{item}</Text>
         </Animated.View>
@@ -51,15 +69,22 @@ const DayPicker = (props) => {
     }
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={{ backgroundColor: 'white', width: itemWidth, height: itemHeight * 7 }}>
-        <View
+  try {
+    return (
+      <View
+        style={{
+          ...styles.com,
+          height: itemHeight * 7,
+        }}
+      >
+        <SafeAreaView
           style={{
-            ...styles.flatlistContainer,
+            ...styles.container,
             height: itemHeight * 7,
-            backgroundColor: 'transparent',
             zIndex: 100,
+            // backgroundColor: 'blue',
+            padding: 0,
+            margin: 0,
           }}
         >
           <Animated.FlatList
@@ -67,6 +92,7 @@ const DayPicker = (props) => {
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
+            keyExtractor={(item, index) => index.toString()}
             onMomentumScrollEnd={momentumScrollEnd}
             scrollEventThrottle={16}
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
@@ -78,7 +104,7 @@ const DayPicker = (props) => {
               index,
             })}
           />
-        </View>
+        </SafeAreaView>
 
         <View
           style={{
@@ -86,30 +112,52 @@ const DayPicker = (props) => {
             height: itemHeight,
             position: 'absolute',
             top: 3 * itemHeight,
-            width: itemWidth,
+            width: '100%',
             zIndex: 1,
           }}
         >
           <Text></Text>
         </View>
       </View>
-    </View>
-  );
+    );
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const styles = StyleSheet.create({
-  container: {
+  com: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
+    // height: 200,
+    padding: 0,
+    margin: 0,
   },
-  flatlistContainer: {
-    width: 100,
-    backgroundColor: '#fff',
-    position: 'relative',
+  container: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: 0,
+    margin: 0,
+    // alignItems: 'center',
+    // alignContent: 'center',
+    // marginTop: StatusBar.currentHeight || 0,
+    // backgroundColor: 'green',
+    // height: 200,
+  },
+  // item: {
+  //   backgroundColor: '#f9c2ff',
+  //   padding: 20,
+  //   marginVertical: 8,
+  //   marginHorizontal: 16,
+  // },
+  title: {
+    fontSize: 32,
   },
   pickerItem: {
-    fontWeight: '600',
+    // fontWeight: '600',
     textAlign: 'center',
     color: '#000',
     borderColor: 'red',
@@ -121,12 +169,13 @@ const styles = StyleSheet.create({
   indicator: {
     width: 50,
     height: 1,
-    backgroundColor: '#1f1f',
+    backgroundColor: '#ccc',
   },
   animatedContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    // backgroundColor: 'blue',
   },
 });
 
-export default DayPicker;
+export default DayAndroidPicker;

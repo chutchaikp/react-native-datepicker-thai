@@ -1,30 +1,22 @@
 import { useRef, useState } from 'react';
 import { Animated, FlatList, StyleSheet, Text, View } from 'react-native';
+import DatePicker from './DatePicker';
 
-import YearPicker from './YearPicker';
-import MonthPicker from './MonthPicker';
-import DayPicker from './DayPicker';
-import MonthAndroidPicker from './MonthAndroidPicker';
+// import YearPicker from './YearPicker';
+// import MonthPicker from './MonthPicker';
+// import DayPicker from './DayPicker';
+// import MonthAndroidPicker from './MonthAndroidPicker';
 
 const App = () => {
   return (
     <View style={styles.container}>
-      {/* <Text>Hi</Text> */}
-
-      <View style={styles.wrapper}>
-        {/* <DayPicker itemHeight={40} fontSize={22} />
-        <MonthPicker itemHeight={40} fontSize={22} />
-        <YearPicker itemHeight={40} fontSize={22} /> */}
-
-        <MonthAndroidPicker itemHeight={40} fontSize={22} />
-      </View>
+      <DatePicker />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // padding: 100,
     // backgroundColor: '#410a0a',
     height: '100%',
     display: 'flex',
