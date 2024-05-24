@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -11,40 +11,69 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const MonthAndroidPicker = (props) => {
-  const { onIndexChange, itemHeight, fontSize } = props;
+const MONTHS = [
+  { index: 0, name: 'x' },
+  { index: 1, name: 'y' },
+  { index: 2, name: 'z' },
+  { index: 3, name: 'มกราคม.' },
+  { index: 4, name: 'กุมภาพันธ์.' },
+  { index: 5, name: 'มีนาคม.' },
+  { index: 6, name: 'เมษายน.' },
+  { index: 7, name: 'พฤษภาคม.' },
+  { index: 8, name: 'มิถุนายน.' },
+  { index: 9, name: 'กรกฎาคม.' },
+  { index: 10, name: 'สิงหาคม.' },
+  { index: 11, name: 'กันยายน.' },
+  { index: 12, name: 'ตุลาคม.' },
+  { index: 13, name: 'พฤศจิกายน.' },
+  { index: 14, name: 'ธันวาคม' },
+  { index: 15, name: 'a' },
+  { index: 16, name: 'b' },
+  { index: 17, name: 'c' },
+];
 
+const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
+  const flatlistRef = useRef();
+
+  const [monthOfYear, setMonthOfYear] = useState(1);
   const [itemWidth, setItemWidth] = useState(150);
+  const [items, setItems] = useState(MONTHS);
 
-  const [items, setItems] = useState(() => {
-    return [
-      '',
-      '',
-      '',
-      'มกราคม.',
-      'กุมภาพันธ์.',
-      'มีนาคม.',
-      'เมษายน.',
-      'พฤษภาคม.',
-      'มิถุนายน.',
-      'กรกฎาคม.',
-      'สิงหาคม.',
-      'กันยายน.',
-      'ตุลาคม.',
-      'พฤศจิกายน.',
-      'ธันวาคม',
-      '',
-      '',
-      '',
-    ];
-  });
+  useEffect(() => {
+    try {
+      if (!_.isDate(date)) {
+        return;
+      }
+
+      const _month = date.getMonth(); // + 1; ?
+
+      console.log(`_month: ${_month} monthOfYear ${monthOfYear} `);
+
+      if (_month !== monthOfYear) {
+        setMonthOfYear(_month);
+        const month = items.find((itm) => itm.index - 3 === _month);
+        // .indexOf(_month);
+        // scrollToIndex(month.index - 3);
+        console.log('----------month.index----------', month.index);
+        scrollToIndex(month.index);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [date]);
+
+  // useEffect(() => {
+  //   console.log('useEffect[dayOfMonth]', dayOfMonth);
+  // }, [dayOfMonth]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const momentumScrollEnd = (event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    console.log(index, items[index + 3]);
+    // onIndexChanged(items[index + 3]);
+    console.log('==================== ', index);
+    onIndexChanged(items[index]);
   };
 
   const renderItem = ({ item, index }) => {
@@ -78,12 +107,23 @@ const MonthAndroidPicker = (props) => {
             styles.animatedContainer,
           ]}
         >
-          <Text style={{ ...styles.pickerItem, fontSize }}>{item}</Text>
+          <Text style={{ ...styles.pickerItem, fontSize }}>{item.name}</Text>
         </Animated.View>
       );
     } catch (error) {
       console.log(error);
       return null;
+    }
+  };
+
+  const scrollToIndex = (index) => {
+    console.log('scrollToIndex', index);
+
+    if (index && flatlistRef.current.scrollToIndex) {
+      console.log('scroll to index called !');
+      setTimeout(() => {
+        flatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 50);
     }
   };
 
@@ -93,7 +133,6 @@ const MonthAndroidPicker = (props) => {
         style={{
           ...styles.com,
           height: itemHeight * 7,
-          // backgroundColor: '#1ff',
         }}
       >
         <SafeAreaView
@@ -101,12 +140,12 @@ const MonthAndroidPicker = (props) => {
             ...styles.container,
             height: itemHeight * 7,
             zIndex: 100,
-            // backgroundColor: 'blue',
             padding: 0,
             margin: 0,
           }}
         >
           <Animated.FlatList
+            ref={flatlistRef}
             data={items}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
@@ -150,7 +189,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    // height: 200,
     padding: 0,
     margin: 0,
   },
@@ -160,26 +198,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 0,
     margin: 0,
-    // alignItems: 'center',
-    // alignContent: 'center',
-    // marginTop: StatusBar.currentHeight || 0,
-    // backgroundColor: 'green',
-    // height: 200,
   },
-  // item: {
-  //   backgroundColor: '#f9c2ff',
-  //   padding: 20,
-  //   marginVertical: 8,
-  //   marginHorizontal: 16,
-  // },
   title: {
     fontSize: 32,
   },
   pickerItem: {
-    // fontWeight: '600',
     textAlign: 'center',
     color: '#000',
-    // borderColor: 'red',
   },
   indicatorHolder: {
     position: 'absolute',
@@ -193,25 +218,7 @@ const styles = StyleSheet.create({
   animatedContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'blue',
   },
 });
 
-export default MonthAndroidPicker;
-
-// const DATA = [
-//   {
-//     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-//     title: 'First Item',
-//   },
-//   {
-//     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-//     title: 'Second Item',
-//   },
-// ];
-
-// const Item = ({ title }) => (
-//   <View style={styles.item}>
-//     <Text style={styles.title}>{title}</Text>
-//   </View>
-// );
+export default DayAndroidPicker;

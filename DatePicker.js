@@ -34,28 +34,46 @@ const DatePicker = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper} onPress={() => props.onCancel()}>
-        <DayAndroidPicker
+        {/* <DayAndroidPicker
           onIndexChanged={(_newdate) => {
             const dv = datevalue;
             const d = dv.getDate();
             const m = dv.getMonth();
             const y = dv.getFullYear();
-
-            // console.log(` y:${y} m:${m + 1} d:${_newdate} `);
             const str = `${y}-${m + 1}-${_newdate}T08:00:000Z`;
-            const newdate = new Date(str);
-            // console.log(newdate.toISOString());
-
+            const newdate = new Date(str);            
             setDatevalue(newdate);
           }}
           date={datevalue}
           itemHeight={40}
           fontSize={22}
-        />
+        /> */}
 
-        {/* <MonthAndroidPicker date={datevalue} itemHeight={40} fontSize={22} />
-        <YearAndroidPicker date={datevalue} itemHeight={40} fontSize={22} />
-				 */}
+        <MonthAndroidPicker
+          onIndexChanged={(_newmonth) => {
+            try {
+              const dv = datevalue;
+              const d = dv.getDate();
+              const m = dv.getMonth();
+              const y = dv.getFullYear();
+
+              // console.log(` y:${y} m:${m + 1} d:${_newmonth.index + 3 + 1} `);
+              const str = `${y}-${_newmonth.index - 3 + 1}-${d}T08:00:000Z`;
+              console.log('str', str);
+              const newdate = new Date(y, _newmonth.index - 3, d, 8, 0);
+              console.log(newdate.toISOString());
+
+              // setDatevalue(newdate);
+            } catch (error) {
+              console.log(error);
+            }
+          }}
+          date={datevalue}
+          itemHeight={40}
+          fontSize={22}
+        />
+        {/*<YearAndroidPicker date={datevalue} itemHeight={40} fontSize={22} />
+         */}
       </View>
 
       <View style={styles.buttons}>
@@ -87,9 +105,9 @@ const DatePicker = (props) => {
           </TouchableOpacity>
         </View>
       </View>
-      {__DEV__ && _.isDate(datevalue) && (
+      {/* {__DEV__ && _.isDate(datevalue) && (
         <Text style={{ fontSize: 22 }}>{datevalue.toISOString()}</Text>
-      )}
+      )} */}
     </View>
   );
 };
