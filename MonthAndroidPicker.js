@@ -18,7 +18,8 @@ const MONTHSbak = [
   { idx: 1, monthName: 'y' },
   { idx: 2, monthName: 'z' },
   { idx: 3, monthName: 'มกราคม.' },
-  { idx: 4, monthName: 'กุมภาพันธ์.' },
+  // { idx: 4, monthName: 'กุมภาพันธ์.' },
+  { idx: 4, monthName: 'feb.' },
   { idx: 5, monthName: 'มีนาคม.' },
   { idx: 6, monthName: 'เมษายน.' },
   { idx: 7, monthName: 'พฤษภาคม.' },
@@ -34,74 +35,55 @@ const MONTHSbak = [
   { idx: 17, monthName: 'c' },
 ];
 
-
 const MONTHS = [
-  'x',
-  'y' },
-  'z' },
-  'มกราคม.' },
-  'กุมภาพันธ์.' },
-  'มีนาคม.' },
-  'เมษายน.' },
-  { idx: 7, monthName: 'พฤษภาคม.' },
-  { idx: 8, monthName: 'มิถุนายน.' },
-  { idx: 9, monthName: 'กรกฎาคม.' },
-  { idx: 10, monthName: 'สิงหาคม.' },
-  { idx: 11, monthName: 'กันยายน.' },
-  { idx: 12, monthName: 'ตุลาคม.' },
-  { idx: 13, monthName: 'พฤศจิกายน.' },
-  { idx: 14, monthName: 'ธันวาคม' },
-  { idx: 15, monthName: 'a' },
-  { idx: 16, monthName: 'b' },
-  { idx: 17, monthName: 'c' },
+  '',
+  '',
+  '',
+  'มกราคม.',
+  'กุมภาพันธ์.',
+  'มีนาคม.',
+  'เมษายน.',
+  'พฤษภาคม.',
+  'มิถุนายน.',
+  'กรกฎาคม.',
+  'สิงหาคม.',
+  'กันยายน.',
+  'ตุลาคม.',
+  'พฤศจิกายน.',
+  'ธันวาคม',
+  '',
+  '',
+  '',
 ];
 
-const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
-  const flatlistRef = useRef();
+let monthOfYear = 0;
 
-  const [monthOfYear, setMonthOfYear] = useState(1);
+const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIndex }) => {
+  // console.log('rendering DayAndroidPicker.js component ');
+
+  const monthFlatlistRef = useRef();
+
   const [itemWidth, setItemWidth] = useState(150);
   const [items, setItems] = useState(MONTHS);
 
-  // ue
-  // useEffect(() => {
-  //   return cleanUp = () => {
-  //   }
-  // }, []);
-
   useEffect(() => {
     try {
-      if (!_.isDate(date)) {
-        return;
-      }
-
-      const _month = date.getMonth(); // + 1; ?
-
-      console.log(`_month: ${_month} monthOfYear ${monthOfYear} `);
-
-      if (_month !== monthOfYear) {
-        setMonthOfYear(_month);
-        scrollToIndex(_month); // onload
+      // console.log(`useEffect[monthIndex] - monthIndex: ${monthIndex} monthOfYear ${monthOfYear} `);
+      if (monthIndex >= 0) {
+        scrollToIndex(monthIndex);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [date]);
-
-  // useEffect(() => {
-  //   console.log('useEffect[dayOfMonth]', dayOfMonth);
-  // }, [dayOfMonth]);
+  }, [monthIndex]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const scrollToIndex = (index) => {
-    console.log('scrollToIndex', index);
-
-    if (index >= 0 && flatlistRef.current.scrollToIndex) {
-      console.log('scroll to index called !');
+    if (index >= 0 && monthFlatlistRef.current.scrollToIndex) {
       setTimeout(() => {
-        flatlistRef.current.scrollToIndex({ animated: true, index: index });
-      }, 100);
+        monthFlatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 50);
     } else {
       console.log('Not found index and flatlistRef.current.scrollToIndex');
     }
@@ -111,19 +93,8 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
     try {
       const y = event.nativeEvent.contentOffset.y;
       const index = Math.round(y / itemHeight);
-
-      // onIndexChanged(items[index + 3]);
-      // console.log('==========momentumScrollEnd========== ', index + 3);
-      // console.log(items[index]);
-      // console.log('');
-
-      // const newMonth = items[index + 3]
-      // onIndexChanged(items[index + 3]);
-
-      console.log('momentumScrollEnd() - new index', index);
-
-      setMonthOfYear(index);
-
+      // console.log('on momentumScrollEnd() with index: ' + index);
+      monthOfYear = index;
       onIndexChanged(index);
     } catch (error) {
       console.log(error);
@@ -132,8 +103,15 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
 
   const renderItem = ({ item, index }) => {
     // return (
-    //   <View style={{ height: itemHeight, width: itemWidth }}>
-    //     <Text style={{ ...styles.pickerItem, fontSize }}>{item.monthName}</Text>
+    //   <View
+    //     style={{
+    //       height: itemHeight,
+    //       width: itemWidth,
+    //       borderColor: 'red',
+    //       borderWidth: 1,
+    //     }}
+    //   >
+    //     <Text style={{ ...styles.pickerItem, fontSize }}>{item}</Text>
     //   </View>
     // );
     try {
@@ -149,7 +127,7 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
 
       const scale = scrollY.interpolate({
         inputRange,
-        outputRange: [0.3, 0.6, 0.8, 1, 0.8, 0.6, 0.3],
+        outputRange: [0.6, 0.7, 0.8, 1, 0.8, 0.7, 0.6],
       });
 
       return (
@@ -166,7 +144,7 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
             styles.animatedContainer,
           ]}
         >
-          <Text style={{ ...styles.pickerItem, fontSize }}>{item.monthName}</Text>
+          <Text style={{ ...styles.pickerItem, fontSize }}>{item}</Text>
         </Animated.View>
       );
     } catch (error) {
@@ -193,7 +171,7 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
           }}
         >
           <Animated.FlatList
-            ref={flatlistRef}
+            ref={monthFlatlistRef}
             data={items}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
@@ -224,34 +202,12 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
         >
           <Text></Text>
         </View>
-
-        {__DEV__ && false && (
-          <View>
-            <TouchableOpacity onPress={() => scrollToIndex(0)}>
-              <Text>Go to 0</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => scrollToIndex(1)}>
-              <Text>Go to 1</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => scrollToIndex(2)}>
-              <Text>Go to 2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => scrollToIndex(3)}>
-              <Text>Go to 3</Text>
-            </TouchableOpacity>
-            {/* <TouchableOpacity onPress={() => scrollToIndex(4)}>
-              <Text>Go to 4</Text>
-            </TouchableOpacity> */}
-
-            <Text>monthOfYear: {monthOfYear}</Text>
-          </View>
-        )}
       </View>
     );
   } catch (error) {
     console.log(error);
   }
-};
+});
 
 const styles = StyleSheet.create({
   com: {
@@ -291,11 +247,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//
-
-// rnss
-// const styles = StyleSheet.create({
-
-// })
-
-export default DayAndroidPicker;
+export default MonthAndroidPicker;

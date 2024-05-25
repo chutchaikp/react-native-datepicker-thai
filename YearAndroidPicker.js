@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -11,8 +11,12 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const YearAndroidPicker = (props) => {
-  const { onIndexChange, itemHeight, fontSize } = props;
+const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
+  const yearFlatlistRef = useRef();
+
+  // const { onIndexChange, itemHeight, fontSize } = p rops;
+
+  const [year, setYear] = useState(1999);
 
   const [itemWidth, setItemWidth] = useState(100);
 
@@ -22,12 +26,44 @@ const YearAndroidPicker = (props) => {
     return ['', '', '', ...y, '', '', ''];
   });
 
+  useEffect(() => {
+    try {
+      if (!_.isDate(date)) {
+        return;
+      }
+
+      const _year = date.getFullYear();
+      if (_year !== year) {
+        setYear(_year);
+        const index = items.indexOf(parseInt(_year) + 543);
+
+        // console.log(items);
+        // console.log('_year', _year);
+        // console.log(items.indexOf(parseInt(_year) + 543));
+
+        scrollToIndex(index - 3); // onload
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [date]);
+
   const scrollY = useRef(new Animated.Value(0)).current;
+
+  const scrollToIndex = (index) => {
+    if (index && yearFlatlistRef.current.scrollToIndex) {
+      //console.log('scroll to index called !');
+      setTimeout(() => {
+        yearFlatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 50);
+    }
+  };
 
   const momentumScrollEnd = (event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    console.log(index, items[index + 3]);
+    // console.log(index, items[index + 3]);
+    onIndexChanged(items[index + 3]);
   };
 
   const renderItem = ({ item, index }) => {
@@ -92,6 +128,7 @@ const YearAndroidPicker = (props) => {
           }}
         >
           <Animated.FlatList
+            ref={yearFlatlistRef}
             data={items}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}

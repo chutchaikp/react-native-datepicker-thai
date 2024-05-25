@@ -92,7 +92,7 @@ const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
 
   const scrollToIndex = (index) => {
     if (index && flatlistRef.current.scrollToIndex) {
-      console.log('scroll to index called !');
+      //console.log('scroll to index called !');
       setTimeout(() => {
         flatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

@@ -11,11 +11,11 @@ const newdate = new Date();
 
 const DatePicker = (props) => {
   const [datevalue, setDatevalue] = useState(newdate);
+  const [monthindex, setMonthindex] = useState(0);
 
   useEffect(() => {
     if (_.isDate(datevalue)) {
-      console.log('datevalue');
-      console.log(datevalue);
+      // console.log('datevalue',datevalue);
     }
   }, []);
 
@@ -40,14 +40,12 @@ const DatePicker = (props) => {
             const d = dv.getDate();
             const m = dv.getMonth();
             const y = dv.getFullYear();
-            // const str = `${y}-${m + 1}-${_newdate}T08:00:000Z`;
             const newdate = new Date(y, m, _newdate, 8, 0, 0);
-            // const newdate = new Date(str);
             setDatevalue(newdate);
           }}
           date={datevalue}
           itemHeight={40}
-          fontSize={22}
+          fontSize={18}
         />
 
         <MonthAndroidPicker
@@ -57,35 +55,43 @@ const DatePicker = (props) => {
               const d = dv.getDate();
               const m = dv.getMonth();
               const y = dv.getFullYear();
-
-              // console.log('_newmonth', newmonthIndex);
-              // console.log('y', y);
-              // console.log('m', newmonthIndex);
-              // console.log('d', d);
-
-              const newdate = new Date(y, newmonthIndex, d, 8, 0, 0);
-              // console.log(newdate.toString());
-
+              setMonthindex(newmonthIndex);
+              const newdate = datevalue;
+              newdate.setMonth(newmonthIndex);
+              // console.log('DatePicker.js newdate', newdate);
               setDatevalue(newdate);
             } catch (error) {
               console.log(error);
             }
           }}
+          monthIndex={monthindex}
+          itemHeight={40}
+          fontSize={18}
+        />
+        <YearAndroidPicker
+          onIndexChanged={(_newyear) => {
+            const dv = datevalue;
+            const d = dv.getDate();
+            const m = dv.getMonth();
+            const y = dv.getFullYear();
+            // console.log('_newyear', _newyear);
+            const newdate = new Date(_newyear - 543, m, d, 8, 0, 0);
+            setDatevalue(newdate);
+          }}
           date={datevalue}
           itemHeight={40}
           fontSize={22}
         />
-        {/*<YearAndroidPicker date={datevalue} itemHeight={40} fontSize={22} />
-         */}
       </View>
-
       <View style={styles.buttons}>
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              const today = new Date();
-              setDatevalue(today);
+              const _today = new Date();
+              const _monthIndex = _today.getMonth();
+              setDatevalue(_today);
+              setMonthindex(_monthIndex);
             }}
           >
             <Text style={styles.buttonText}>วันนี้</Text>
@@ -106,11 +112,16 @@ const DatePicker = (props) => {
           >
             <Text style={styles.buttonText}>ตกลง</Text>
           </TouchableOpacity>
+
+          {/* <Text style={{ color: 'red', fontSize: 20 }}>{monthindex}</Text> */}
         </View>
       </View>
-      {__DEV__ && _.isDate(datevalue) && (
+
+      {/* <Text style={{ color: 'red', fontSize: 20 }}>MonthIndex {monthindex}</Text> */}
+      {/* {__DEV__ && _.isDate(datevalue) && (
         <Text style={{ fontSize: 22 }}>{datevalue.toISOString()}</Text>
       )}
+       */}
     </View>
   );
 };
