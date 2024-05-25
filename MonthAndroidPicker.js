@@ -8,28 +8,52 @@ import {
   SafeAreaView,
   StatusBar,
   Animated,
+  Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 
+const MONTHSbak = [
+  { idx: 0, monthName: 'x' },
+  { idx: 1, monthName: 'y' },
+  { idx: 2, monthName: 'z' },
+  { idx: 3, monthName: 'มกราคม.' },
+  { idx: 4, monthName: 'กุมภาพันธ์.' },
+  { idx: 5, monthName: 'มีนาคม.' },
+  { idx: 6, monthName: 'เมษายน.' },
+  { idx: 7, monthName: 'พฤษภาคม.' },
+  { idx: 8, monthName: 'มิถุนายน.' },
+  { idx: 9, monthName: 'กรกฎาคม.' },
+  { idx: 10, monthName: 'สิงหาคม.' },
+  { idx: 11, monthName: 'กันยายน.' },
+  { idx: 12, monthName: 'ตุลาคม.' },
+  { idx: 13, monthName: 'พฤศจิกายน.' },
+  { idx: 14, monthName: 'ธันวาคม' },
+  { idx: 15, monthName: 'a' },
+  { idx: 16, monthName: 'b' },
+  { idx: 17, monthName: 'c' },
+];
+
+
 const MONTHS = [
-  { index: 0, name: 'x' },
-  { index: 1, name: 'y' },
-  { index: 2, name: 'z' },
-  { index: 3, name: 'มกราคม.' },
-  { index: 4, name: 'กุมภาพันธ์.' },
-  { index: 5, name: 'มีนาคม.' },
-  { index: 6, name: 'เมษายน.' },
-  { index: 7, name: 'พฤษภาคม.' },
-  { index: 8, name: 'มิถุนายน.' },
-  { index: 9, name: 'กรกฎาคม.' },
-  { index: 10, name: 'สิงหาคม.' },
-  { index: 11, name: 'กันยายน.' },
-  { index: 12, name: 'ตุลาคม.' },
-  { index: 13, name: 'พฤศจิกายน.' },
-  { index: 14, name: 'ธันวาคม' },
-  { index: 15, name: 'a' },
-  { index: 16, name: 'b' },
-  { index: 17, name: 'c' },
+  'x',
+  'y' },
+  'z' },
+  'มกราคม.' },
+  'กุมภาพันธ์.' },
+  'มีนาคม.' },
+  'เมษายน.' },
+  { idx: 7, monthName: 'พฤษภาคม.' },
+  { idx: 8, monthName: 'มิถุนายน.' },
+  { idx: 9, monthName: 'กรกฎาคม.' },
+  { idx: 10, monthName: 'สิงหาคม.' },
+  { idx: 11, monthName: 'กันยายน.' },
+  { idx: 12, monthName: 'ตุลาคม.' },
+  { idx: 13, monthName: 'พฤศจิกายน.' },
+  { idx: 14, monthName: 'ธันวาคม' },
+  { idx: 15, monthName: 'a' },
+  { idx: 16, monthName: 'b' },
+  { idx: 17, monthName: 'c' },
 ];
 
 const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
@@ -38,6 +62,12 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
   const [monthOfYear, setMonthOfYear] = useState(1);
   const [itemWidth, setItemWidth] = useState(150);
   const [items, setItems] = useState(MONTHS);
+
+  // ue
+  // useEffect(() => {
+  //   return cleanUp = () => {
+  //   }
+  // }, []);
 
   useEffect(() => {
     try {
@@ -51,11 +81,7 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
 
       if (_month !== monthOfYear) {
         setMonthOfYear(_month);
-        const month = items.find((itm) => itm.index - 3 === _month);
-        // .indexOf(_month);
-        // scrollToIndex(month.index - 3);
-        console.log('----------month.index----------', month.index);
-        scrollToIndex(month.index);
+        scrollToIndex(_month); // onload
       }
     } catch (error) {
       console.log(error);
@@ -68,15 +94,48 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  const scrollToIndex = (index) => {
+    console.log('scrollToIndex', index);
+
+    if (index >= 0 && flatlistRef.current.scrollToIndex) {
+      console.log('scroll to index called !');
+      setTimeout(() => {
+        flatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 100);
+    } else {
+      console.log('Not found index and flatlistRef.current.scrollToIndex');
+    }
+  };
+
   const momentumScrollEnd = (event) => {
-    const y = event.nativeEvent.contentOffset.y;
-    const index = Math.round(y / itemHeight);
-    // onIndexChanged(items[index + 3]);
-    console.log('==================== ', index);
-    onIndexChanged(items[index]);
+    try {
+      const y = event.nativeEvent.contentOffset.y;
+      const index = Math.round(y / itemHeight);
+
+      // onIndexChanged(items[index + 3]);
+      // console.log('==========momentumScrollEnd========== ', index + 3);
+      // console.log(items[index]);
+      // console.log('');
+
+      // const newMonth = items[index + 3]
+      // onIndexChanged(items[index + 3]);
+
+      console.log('momentumScrollEnd() - new index', index);
+
+      setMonthOfYear(index);
+
+      onIndexChanged(index);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderItem = ({ item, index }) => {
+    // return (
+    //   <View style={{ height: itemHeight, width: itemWidth }}>
+    //     <Text style={{ ...styles.pickerItem, fontSize }}>{item.monthName}</Text>
+    //   </View>
+    // );
     try {
       const inputRange = [
         (index - 6) * itemHeight,
@@ -107,23 +166,12 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
             styles.animatedContainer,
           ]}
         >
-          <Text style={{ ...styles.pickerItem, fontSize }}>{item.name}</Text>
+          <Text style={{ ...styles.pickerItem, fontSize }}>{item.monthName}</Text>
         </Animated.View>
       );
     } catch (error) {
       console.log(error);
       return null;
-    }
-  };
-
-  const scrollToIndex = (index) => {
-    console.log('scrollToIndex', index);
-
-    if (index && flatlistRef.current.scrollToIndex) {
-      console.log('scroll to index called !');
-      setTimeout(() => {
-        flatlistRef.current.scrollToIndex({ animated: true, index: index });
-      }, 50);
     }
   };
 
@@ -176,6 +224,28 @@ const DayAndroidPicker = ({ onIndexChanged, itemHeight, fontSize, date }) => {
         >
           <Text></Text>
         </View>
+
+        {__DEV__ && false && (
+          <View>
+            <TouchableOpacity onPress={() => scrollToIndex(0)}>
+              <Text>Go to 0</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => scrollToIndex(1)}>
+              <Text>Go to 1</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => scrollToIndex(2)}>
+              <Text>Go to 2</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => scrollToIndex(3)}>
+              <Text>Go to 3</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity onPress={() => scrollToIndex(4)}>
+              <Text>Go to 4</Text>
+            </TouchableOpacity> */}
+
+            <Text>monthOfYear: {monthOfYear}</Text>
+          </View>
+        )}
       </View>
     );
   } catch (error) {
@@ -220,5 +290,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+//
+
+// rnss
+// const styles = StyleSheet.create({
+
+// })
 
 export default DayAndroidPicker;
