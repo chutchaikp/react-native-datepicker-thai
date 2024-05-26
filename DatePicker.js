@@ -34,7 +34,7 @@ const DatePicker = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper} onPress={() => props.onCancel()}>
-        <DayAndroidPicker
+        {/* <DayAndroidPicker
           onIndexChanged={(_newdate) => {
             const dv = datevalue;
             const d = dv.getDate();
@@ -46,7 +46,7 @@ const DatePicker = (props) => {
           date={datevalue}
           itemHeight={40}
           fontSize={18}
-        />
+        /> */}
 
         <MonthAndroidPicker
           onIndexChanged={(newmonthIndex) => {
@@ -68,20 +68,19 @@ const DatePicker = (props) => {
           itemHeight={40}
           fontSize={18}
         />
-        <YearAndroidPicker
+        {/* <YearAndroidPicker
           onIndexChanged={(_newyear) => {
             const dv = datevalue;
             const d = dv.getDate();
             const m = dv.getMonth();
-            const y = dv.getFullYear();
-            // console.log('_newyear', _newyear);
+            const y = dv.getFullYear();            
             const newdate = new Date(_newyear - 543, m, d, 8, 0, 0);
             setDatevalue(newdate);
           }}
           date={datevalue}
           itemHeight={40}
           fontSize={22}
-        />
+        /> */}
       </View>
       <View style={styles.buttons}>
         <View style={styles.buttonWrapper}>

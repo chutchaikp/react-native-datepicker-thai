@@ -12,6 +12,17 @@ import {
   View,
 } from 'react-native';
 import DatePicker from './DatePicker';
+import MemorizeApp from './debug/MemorizeApp';
+import UsecallbackApp from './debug/UsecallbackApp';
+
+const App = () => {
+  return (
+    <View style={styles.container}>
+      {/* <MemorizeApp /> */}
+      <UsecallbackApp />
+    </View>
+  );
+};
 
 const App3 = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,7 +71,7 @@ const App3 = () => {
   );
 };
 
-const App = () => {
+const App4 = () => {
   const [datevalue, setDatevalue] = useState(null);
 
   const [showdate, setShowdate] = useState(false);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo, useCallback } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -101,7 +101,7 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
     }
   };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = useCallback(({ item, index }) => {
     // return (
     //   <View
     //     style={{
@@ -151,7 +151,12 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
       console.log(error);
       return null;
     }
-  };
+  }, []);
+
+  const _keyExtractor = useCallback((item, index) => {
+    console.log('keyExtractor', index);
+    return index.toString();
+  }, []);
 
   try {
     return (
@@ -173,10 +178,18 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
           <Animated.FlatList
             ref={monthFlatlistRef}
             data={items}
+            //< how optimize
+            // initialNumToRender={7}
+            // maxToRenderPerBatch={1}
+            // windowSize={5}
+            // onEndReachedThreshold={0.9}
+            // removeClippedSubviews
+            // decelerationRate="fast"
+            //> how optimize
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={_keyExtractor}
             onMomentumScrollEnd={momentumScrollEnd}
             scrollEventThrottle={16}
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
