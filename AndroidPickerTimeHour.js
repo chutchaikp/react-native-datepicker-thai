@@ -8,112 +8,52 @@ import {
   SafeAreaView,
   StatusBar,
   Animated,
-  Pressable,
-  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 
-const MONTHSbak = [
-  { idx: 0, monthName: 'x' },
-  { idx: 1, monthName: 'y' },
-  { idx: 2, monthName: 'z' },
-  { idx: 3, monthName: 'มกราคม.' },
-  // { idx: 4, monthName: 'กุมภาพันธ์.' },
-  { idx: 4, monthName: 'feb.' },
-  { idx: 5, monthName: 'มีนาคม.' },
-  { idx: 6, monthName: 'เมษายน.' },
-  { idx: 7, monthName: 'พฤษภาคม.' },
-  { idx: 8, monthName: 'มิถุนายน.' },
-  { idx: 9, monthName: 'กรกฎาคม.' },
-  { idx: 10, monthName: 'สิงหาคม.' },
-  { idx: 11, monthName: 'กันยายน.' },
-  { idx: 12, monthName: 'ตุลาคม.' },
-  { idx: 13, monthName: 'พฤศจิกายน.' },
-  { idx: 14, monthName: 'ธันวาคม' },
-  { idx: 15, monthName: 'a' },
-  { idx: 16, monthName: 'b' },
-  { idx: 17, monthName: 'c' },
-];
+const h = _.range(0, 24);
+const HOURS = ['', '', '', ...h, '', '', ''];
 
-const MONTHS = [
-  '',
-  '',
-  '',
-  'มกราคม.',
-  'กุมภาพันธ์.',
-  'มีนาคม.',
-  'เมษายน.',
-  'พฤษภาคม.',
-  'มิถุนายน.',
-  'กรกฎาคม.',
-  'สิงหาคม.',
-  'กันยายน.',
-  'ตุลาคม.',
-  'พฤศจิกายน.',
-  'ธันวาคม',
-  '',
-  '',
-  '',
-];
+const AndroidPickerTimeHour = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {
+  const hourFlatlistRef = useRef();
 
-let monthOfYear = 0;
-
-const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIndex }) => {
-  // console.log('rendering DayAndroidPicker.js component ');
-
-  const monthFlatlistRef = useRef();
-
+  const [hour, setHour] = useState(0);
   const [itemWidth, setItemWidth] = useState(150);
-  const [items, setItems] = useState(MONTHS);
+  const [items, setItems] = useState(HOURS);
 
   useEffect(() => {
     try {
-      // console.log(`useEffect[monthIndex] - monthIndex: ${monthIndex} monthOfYear ${monthOfYear} `);
-      if (monthIndex >= 0) {
-        scrollToIndex(monthIndex);
+      if (!_.isDate(date)) {
+        return;
+      }
+
+      const _hour = date.getHours();
+      // console.log('Hour - useEffect[date] hour:', _hour);
+      // console.log(date.toISOString());
+
+      if (_hour !== hour) {
+        setHour(_hour);
+        const index = items.indexOf(_hour);
+        scrollToIndex(index - 3);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [monthIndex]);
+  }, [date]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
-
-  const scrollToIndex = (index) => {
-    if (index >= 0 && monthFlatlistRef.current.scrollToIndex) {
-      setTimeout(() => {
-        monthFlatlistRef.current.scrollToIndex({ animated: true, index: index });
-      }, 50);
-    } else {
-      console.log('Not found index and flatlistRef.current.scrollToIndex');
-    }
-  };
 
   const momentumScrollEnd = (event) => {
     try {
       const y = event.nativeEvent.contentOffset.y;
       const index = Math.round(y / itemHeight);
-      // console.log('on momentumScrollEnd() with index: ' + index);
-      monthOfYear = index;
-      onIndexChanged(index);
+      onIndexChanged(items[index + 3]);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const renderItem = useCallback(({ item, index }) => {
-    // return (
-    //   <View
-    //     style={{
-    //       height: itemHeight,
-    //       width: itemWidth,
-    //       borderColor: 'red',
-    //       borderWidth: 1,
-    //     }}
-    //   >
-    //     <Text style={{ ...styles.pickerItem, fontSize }}>{item}</Text>
-    //   </View>
-    // );
+  const renderItem = ({ item, index }) => {
     try {
       const inputRange = [
         (index - 6) * itemHeight,
@@ -127,7 +67,7 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
 
       const scale = scrollY.interpolate({
         inputRange,
-        outputRange: [0.6, 0.7, 0.8, 1, 0.8, 0.7, 0.6],
+        outputRange: [0.3, 0.6, 0.8, 1, 0.8, 0.6, 0.3],
       });
 
       return (
@@ -151,12 +91,21 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
       console.log(error);
       return null;
     }
-  }, []);
+  };
 
   const _keyExtractor = useCallback((item, index) => {
-    console.log('keyExtractor', index);
-    return index.toString();
+    const _key = 'h' + index.toString();
+    return _key;
   }, []);
+
+  const scrollToIndex = (index) => {
+    if (index && hourFlatlistRef.current.scrollToIndex) {
+      //console.log('scroll to index called !');
+      setTimeout(() => {
+        hourFlatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 50);
+    }
+  };
 
   try {
     return (
@@ -170,22 +119,14 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
           style={{
             ...styles.container,
             height: itemHeight * 7,
-            zIndex: 100,
+            zIndex: 300,
             padding: 0,
             margin: 0,
           }}
         >
           <Animated.FlatList
-            ref={monthFlatlistRef}
+            ref={hourFlatlistRef}
             data={items}
-            //< how optimize
-            // initialNumToRender={7}
-            // maxToRenderPerBatch={1}
-            // windowSize={5}
-            // onEndReachedThreshold={0.9}
-            // removeClippedSubviews
-            // decelerationRate="fast"
-            //> how optimize
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
@@ -210,7 +151,7 @@ const MonthAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, monthIn
             position: 'absolute',
             top: 3 * itemHeight,
             width: '100%',
-            zIndex: 1,
+            zIndex: 200,
           }}
         >
           <Text></Text>
@@ -260,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MonthAndroidPicker;
+export default AndroidPickerTimeHour;

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo } from 'react';
+import { useEffect, useRef, useState, memo, useCallback } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -8,18 +8,40 @@ import {
   SafeAreaView,
   StatusBar,
   Animated,
+  Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import _ from 'lodash';
 
-const y = _.range(1, 32);
-const DAYS = ['', '', '', ...y, '', '', ''];
+const MONTHS = [
+  '',
+  '',
+  '',
+  'มกราคม.',
+  'กุมภาพันธ์.',
+  'มีนาคม.',
+  'เมษายน.',
+  'พฤษภาคม.',
+  'มิถุนายน.',
+  'กรกฎาคม.',
+  'สิงหาคม.',
+  'กันยายน.',
+  'ตุลาคม.',
+  'พฤศจิกายน.',
+  'ธันวาคม',
+  '',
+  '',
+  '',
+];
 
-const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {
-  const flatlistRef = useRef();
+const AndroidPickerMonth = memo(({ date, onIndexChanged, itemHeight, fontSize, monthIndex }) => {
+  console.log('AndroidPickerMonth - render');
 
-  const [dayOfMonth, setDayOfMonth] = useState(1);
-  const [itemWidth, setItemWidth] = useState(50);
-  const [items, setItems] = useState(DAYS);
+  const monthFlatlistRef = useRef();
+
+  const [month, setMonth] = useState(0);
+  const [itemWidth, setItemWidth] = useState(150);
+  const [items, setItems] = useState(MONTHS);
 
   useEffect(() => {
     try {
@@ -27,30 +49,47 @@ const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
         return;
       }
 
-      const _date = date.getDate();
-      if (_date !== dayOfMonth) {
-        setDayOfMonth(_date);
-        const index = items.indexOf(_date);
-        scrollToIndex(index - 3);
+      const _month = date.getMonth();
+      if (_month !== month) {
+        setMonth(_month);
+        scrollToIndex(_month);
       }
     } catch (error) {
       console.log(error);
     }
   }, [date]);
 
-  // useEffect(() => {
-  //   console.log('useEffect[dayOfMonth]', dayOfMonth);
-  // }, [dayOfMonth]);
-
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const momentumScrollEnd = (event) => {
-    const y = event.nativeEvent.contentOffset.y;
-    const index = Math.round(y / itemHeight);
-    onIndexChanged(items[index + 3]);
+  const scrollToIndex = (index) => {
+    try {
+      if (index >= 0 && monthFlatlistRef.current.scrollToIndex) {
+        setTimeout(() => {
+          try {
+            monthFlatlistRef.current.scrollToIndex({ animated: true, index: index });
+          } catch (error) {
+            console.log(error);
+          }
+        }, 50);
+      } else {
+        console.log('Not found index and flatlistRef.current.scrollToIndex');
+      }
+    } catch (ex) {
+      console.log(ex);
+    }
   };
 
-  const renderItem = ({ item, index }) => {
+  const momentumScrollEnd = (event) => {
+    try {
+      const y = event.nativeEvent.contentOffset.y;
+      const index = Math.round(y / itemHeight);
+      onIndexChanged(index);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const renderItem = useCallback(({ item, index }) => {
     try {
       const inputRange = [
         (index - 6) * itemHeight,
@@ -64,7 +103,7 @@ const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
 
       const scale = scrollY.interpolate({
         inputRange,
-        outputRange: [0.3, 0.6, 0.8, 1, 0.8, 0.6, 0.3],
+        outputRange: [0.6, 0.7, 0.8, 1, 0.8, 0.7, 0.6],
       });
 
       return (
@@ -88,16 +127,12 @@ const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
       console.log(error);
       return null;
     }
-  };
+  }, []);
 
-  const scrollToIndex = (index) => {
-    if (index && flatlistRef.current.scrollToIndex) {
-      //console.log('scroll to index called !');
-      setTimeout(() => {
-        flatlistRef.current.scrollToIndex({ animated: true, index: index });
-      }, 50);
-    }
-  };
+  const _keyExtractor = useCallback((item, index) => {
+    const _key = 'm' + index.toString();
+    return _key;
+  }, []);
 
   try {
     return (
@@ -111,18 +146,26 @@ const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
           style={{
             ...styles.container,
             height: itemHeight * 7,
-            zIndex: 100,
+            zIndex: 300,
             padding: 0,
             margin: 0,
           }}
         >
           <Animated.FlatList
-            ref={flatlistRef}
+            ref={monthFlatlistRef}
             data={items}
+            //< how optimize
+            // initialNumToRender={7}
+            // maxToRenderPerBatch={1}
+            // windowSize={5}
+            // onEndReachedThreshold={0.9}
+            // removeClippedSubviews
+            // decelerationRate="fast"
+            //> how optimize
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={_keyExtractor}
             onMomentumScrollEnd={momentumScrollEnd}
             scrollEventThrottle={16}
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
@@ -143,7 +186,7 @@ const DayAndroidPicker = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
             position: 'absolute',
             top: 3 * itemHeight,
             width: '100%',
-            zIndex: 1,
+            zIndex: 200,
           }}
         >
           <Text></Text>
@@ -193,4 +236,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DayAndroidPicker;
+export default AndroidPickerMonth;

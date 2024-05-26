@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, memo, useCallback } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -11,20 +11,15 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
-  const yearFlatlistRef = useRef();
+const m = _.range(0, 59);
+const MINUTES = ['', '', '', ...m, '', '', ''];
 
-  // const { onIndexChange, itemHeight, fontSize } = p rops;
+const AndroidPickerTimeMinute = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {
+  const minuteFlatlistRef = useRef();
 
-  const [year, setYear] = useState(1999);
-
-  const [itemWidth, setItemWidth] = useState(100);
-
-  const [items, setItems] = useState(() => {
-    const fy = new Date().getFullYear();
-    const y = _.range(fy - 100 + 543, fy + 543 + 1);
-    return ['', '', '', ...y, '', '', ''];
-  });
+  const [minute, setMinute] = useState(0);
+  const [itemWidth, setItemWidth] = useState(150);
+  const [items, setItems] = useState(MINUTES);
 
   useEffect(() => {
     try {
@@ -32,16 +27,14 @@ const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
         return;
       }
 
-      const _year = date.getFullYear();
-      if (_year !== year) {
-        setYear(_year);
-        const index = items.indexOf(parseInt(_year) + 543);
+      const _minute = date.getMinutes();
+      // console.log('Minute - useEffect[date] minute:', _minute);
+      // console.log(date.toISOString());
 
-        // console.log(items);
-        // console.log('_year', _year);
-        // console.log(items.indexOf(parseInt(_year) + 543));
-
-        scrollToIndex(index - 3); // onload
+      if (_minute !== minute) {
+        setMinute(_minute);
+        const index = items.indexOf(_minute);
+        scrollToIndex(index - 3);
       }
     } catch (error) {
       console.log(error);
@@ -50,20 +43,14 @@ const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const scrollToIndex = (index) => {
-    if (index && yearFlatlistRef.current.scrollToIndex) {
-      //console.log('scroll to index called !');
-      setTimeout(() => {
-        yearFlatlistRef.current.scrollToIndex({ animated: true, index: index });
-      }, 50);
-    }
-  };
-
   const momentumScrollEnd = (event) => {
-    const y = event.nativeEvent.contentOffset.y;
-    const index = Math.round(y / itemHeight);
-    // console.log(index, items[index + 3]);
-    onIndexChanged(items[index + 3]);
+    try {
+      const y = event.nativeEvent.contentOffset.y;
+      const index = Math.round(y / itemHeight);
+      onIndexChanged(items[index + 3]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const renderItem = ({ item, index }) => {
@@ -106,34 +93,44 @@ const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
     }
   };
 
+  const _keyExtractor = useCallback((item, index) => {
+    const _key = 'minute' + index.toString();
+    return _key;
+  }, []);
+
+  const scrollToIndex = (index) => {
+    if (index && minuteFlatlistRef.current.scrollToIndex) {
+      //console.log('scroll to index called !');
+      setTimeout(() => {
+        minuteFlatlistRef.current.scrollToIndex({ animated: true, index: index });
+      }, 50);
+    }
+  };
+
   try {
     return (
       <View
         style={{
           ...styles.com,
           height: itemHeight * 7,
-          padding: 0,
-          margin: 0,
-          // backgroundColor: '#1f1f',
         }}
       >
         <SafeAreaView
           style={{
             ...styles.container,
             height: itemHeight * 7,
-            zIndex: 100,
-            // backgroundColor: 'blue',
+            zIndex: 300,
             padding: 0,
             margin: 0,
           }}
         >
           <Animated.FlatList
-            ref={yearFlatlistRef}
+            ref={minuteFlatlistRef}
             data={items}
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
             snapToInterval={itemHeight}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={_keyExtractor}
             onMomentumScrollEnd={momentumScrollEnd}
             scrollEventThrottle={16}
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
@@ -154,7 +151,7 @@ const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
             position: 'absolute',
             top: 3 * itemHeight,
             width: '100%',
-            zIndex: 1,
+            zIndex: 200,
           }}
         >
           <Text></Text>
@@ -164,7 +161,7 @@ const YearAndroidPicker = ({ date, onIndexChanged, itemHeight, fontSize }) => {
   } catch (error) {
     console.log(error);
   }
-};
+});
 
 const styles = StyleSheet.create({
   com: {
@@ -172,7 +169,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-    // height: 200,
     padding: 0,
     margin: 0,
   },
@@ -182,26 +178,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 0,
     margin: 0,
-    // alignItems: 'center',
-    // alignContent: 'center',
-    // marginTop: StatusBar.currentHeight || 0,
-    // backgroundColor: 'green',
-    // height: 200,
   },
-  // item: {
-  //   backgroundColor: '#f9c2ff',
-  //   padding: 20,
-  //   marginVertical: 8,
-  //   marginHorizontal: 16,
-  // },
   title: {
     fontSize: 32,
   },
   pickerItem: {
-    // fontWeight: '600',
     textAlign: 'center',
     color: '#000',
-    // borderColor: 'red',
   },
   indicatorHolder: {
     position: 'absolute',
@@ -215,8 +198,7 @@ const styles = StyleSheet.create({
   animatedContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    // backgroundColor: 'blue',
   },
 });
 
-export default YearAndroidPicker;
+export default AndroidPickerTimeMinute;
