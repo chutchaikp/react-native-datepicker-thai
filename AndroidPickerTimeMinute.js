@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const m = _.range(0, 59);
+const m = _.range(0, 60);
 const MINUTES = ['', '', '', ...m, '', '', ''];
 
 const AndroidPickerTimeMinute = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {

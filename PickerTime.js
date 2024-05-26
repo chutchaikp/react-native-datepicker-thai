@@ -32,31 +32,10 @@ const PickerTime = (props) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.wrapper} onPress={() => props.onCancel()}>
-        {/* <AndroidPickerYear
-          onIndexChanged={(_newyear) => {
-            const dv = datevalue;
-            const d = dv.getDate();
-            const m = dv.getMonth();
-            const y = dv.getFullYear();
-            const newdate = new Date(_newyear - 543, m, d, 8, 0, 0);
-            setDatevalue(newdate);
-          }}
-          date={datevalue}
-          itemHeight={40}
-          fontSize={18}
-        /> */}
-
+      <View style={styles.wrapper}>
         <AndroidPickerTimeHour
           onIndexChanged={(newhour) => {
-            console.log(newhour);
-            // const dv = datevalue;
-            // const d = dv.getDate();
-            // const m = dv.getMonth();
-            // const y = dv.getFullYear();
-            // const newdate = new Date(_newyear - 543, m, d, 8, 0, 0);
-            // setDatevalue(newdate);
-
+            // console.log(newhour);
             const newdate = datevalue;
             newdate.setHours(newhour);
             setDatevalue(newdate);
@@ -78,6 +57,20 @@ const PickerTime = (props) => {
           itemHeight={40}
           fontSize={25}
         />
+      </View>
+
+      <View
+        style={{
+          // backgroundColor: 'red',
+          backgroundColor: 'white',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          paddingBottom: 10,
+        }}
+      >
+        <Text style={{ width: 150, textAlign: 'center' }}>ชั่วโมง</Text>
+        <Text style={{ width: 150, textAlign: 'center' }}>นาที</Text>
       </View>
 
       <View style={styles.buttons}>
