@@ -14,6 +14,10 @@ import _ from 'lodash';
 const y = _.range(1, 32);
 const DAYS = ['', '', '', ...y, '', '', ''];
 
+// ?
+// TODO: what is displayName ?
+AndroidPickerDay.displayName = 'AndroidPickerDay';
+
 const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, dateindex }) => {
   console.log('AndroidPickerDay - rendering...');
 
