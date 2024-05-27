@@ -50,7 +50,7 @@ const AndroidPickerYear = memo(({ onIndexChanged, itemHeight, fontSize, yearinde
   const scrollToIndex = (index) => {
     if (index && yearFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
-      // eslint-disable-next-line no-undef
+
       setTimeout(() => {
         yearFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

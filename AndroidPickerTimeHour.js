@@ -102,7 +102,7 @@ const AndroidPickerTimeHour = memo(({ onIndexChanged, itemHeight, fontSize, date
   const scrollToIndex = (index) => {
     if (index && hourFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
-      // eslint-disable-next-line no-undef
+
       setTimeout(() => {
         hourFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

@@ -108,7 +108,9 @@ const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, dateindex
   const scrollToIndex = (index) => {
     if (index && dayFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
-      // eslint-disable-next-line no-undef
+
+      xxx;
+
       setTimeout(() => {
         dayFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

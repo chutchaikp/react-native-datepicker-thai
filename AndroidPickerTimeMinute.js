@@ -103,7 +103,6 @@ const AndroidPickerTimeMinute = memo(({ onIndexChanged, itemHeight, fontSize, da
     if (index && minuteFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
 
-      // eslint-disable-next-line no-undef
       setTimeout(() => {
         minuteFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

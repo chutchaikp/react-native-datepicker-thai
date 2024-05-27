@@ -63,7 +63,6 @@ const AndroidPickerMonth = memo(({ onIndexChanged, itemHeight, fontSize, monthin
   const scrollToIndex = (index) => {
     try {
       if (index >= 0 && monthFlatlistRef.current.scrollToIndex) {
-        // eslint-disable-next-line no-undef
         setTimeout(() => {
           try {
             monthFlatlistRef.current.scrollToIndex({ animated: true, index: index });
