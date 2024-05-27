@@ -14,29 +14,30 @@ import _ from 'lodash';
 const y = _.range(1, 32);
 const DAYS = ['', '', '', ...y, '', '', ''];
 
-const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {
+const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, dateindex }) => {
+  console.log('AndroidPickerDay - rendering...');
+
   const dayFlatlistRef = useRef();
 
-  const [dayOfMonth, setDayOfMonth] = useState(1);
+  // const [dayOfMonth, setDayOfMonth] = useState(1);
   const [itemWidth, setItemWidth] = useState(50);
   const [items, setItems] = useState(DAYS);
 
   useEffect(() => {
     try {
-      if (!_.isDate(date)) {
-        return;
-      }
+      console.log(`AndroidPickerDay.useEffect[dateindex] dateindex: ${dateindex} `);
 
-      const _date = date.getDate();
-      if (_date !== dayOfMonth) {
-        setDayOfMonth(_date);
-        const index = items.indexOf(_date);
-        scrollToIndex(index - 3);
-      }
+      // const _date = date.getDate();
+      // if (_date !== dayOfMonth) {
+      //   setDayOfMonth(_date);
+      //   const index = items.indexOf(_date);
+      //   scrollToIndex(index - 3);
+      // }
+      scrollToIndex(dateindex);
     } catch (error) {
       console.log(error);
     }
-  }, [date]);
+  }, [dateindex]);
 
   // useEffect(() => {
   //   console.log('useEffect[dayOfMonth]', dayOfMonth);
@@ -44,13 +45,22 @@ const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
-  const momentumScrollEnd = (event) => {
+  const momentumScrollEnd = useCallback((event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    onIndexChanged(items[index + 3]);
-  };
 
-  const renderItem = ({ item, index }) => {
+    console.log('');
+    console.log(
+      `AndroidPickerDay.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+        scrollY
+      )} `
+    );
+
+    // onIndexChanged(items[index + 3]);
+    onIndexChanged(index);
+  }, []);
+
+  const renderItem = useCallback(({ item, index }) => {
     try {
       const inputRange = [
         (index - 6) * itemHeight,
@@ -88,7 +98,7 @@ const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
       console.log(error);
       return null;
     }
-  };
+  }, []);
 
   const _keyExtractor = useCallback((item, index) => {
     const _key = 'd' + index.toString();
@@ -98,6 +108,7 @@ const AndroidPickerDay = memo(({ onIndexChanged, itemHeight, fontSize, date }) =
   const scrollToIndex = (index) => {
     if (index && dayFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
+      // eslint-disable-next-line no-undef
       setTimeout(() => {
         dayFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

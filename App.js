@@ -13,7 +13,8 @@ import {
 } from 'react-native';
 
 import PickerDate from './PickerDate';
-import PickerTime from './PickerTime';
+// import PickerTime from './PickerTime';
+// import StyleApp from './debug/StyleApp';
 // import PickerTime from './PickerTime';
 
 // import MemorizeApp from './debug/MemorizeApp';
@@ -26,53 +27,8 @@ const AppX = () => {
       {/* <MemorizeApp /> */}
       {/* how to useCallback */}
       {/* <UsecallbackApp /> */}
-    </View>
-  );
-};
 
-const App3 = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  return (
-    <View style={styles.container}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-
-            <DatePicker
-              showdate={true}
-              onOk={(val) => {
-                // setDatevalue(val);
-                // setShowdate(false);
-              }}
-              onCancel={() => {
-                // setShowdate(false);
-              }}
-              // onDatevalueChanged={(value) => {
-              //   setDatevalue(value);
-              // }}
-            />
-          </View>
-        </View>
-      </Modal>
-      <Pressable style={[styles.button, styles.buttonOpen]} onPress={() => setModalVisible(true)}>
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
+      {/* <StyleApp /> */}
     </View>
   );
 };
@@ -117,7 +73,7 @@ const App = () => {
         }}
       />
 
-      <PickerTime
+      {/* <PickerTime
         showtime={showtime}
         onOk={(val) => {
           console.log(val);
@@ -134,7 +90,7 @@ const App = () => {
         onCancel={() => {
           setShowtime(false);
         }}
-      />
+      /> */}
 
       {datevalue && _.isDate(datevalue) && (
         <TouchableOpacity style={{ padding: 20 }}>

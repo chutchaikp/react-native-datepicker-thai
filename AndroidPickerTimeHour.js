@@ -14,6 +14,7 @@ import _ from 'lodash';
 const h = _.range(0, 24);
 const HOURS = ['', '', '', ...h, '', '', ''];
 
+// eslint-disable-next-line react/display-name
 const AndroidPickerTimeHour = memo(({ onIndexChanged, itemHeight, fontSize, date }) => {
   const hourFlatlistRef = useRef();
 
@@ -101,6 +102,7 @@ const AndroidPickerTimeHour = memo(({ onIndexChanged, itemHeight, fontSize, date
   const scrollToIndex = (index) => {
     if (index && hourFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
+      // eslint-disable-next-line no-undef
       setTimeout(() => {
         hourFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);

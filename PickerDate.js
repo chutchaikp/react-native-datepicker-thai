@@ -5,23 +5,46 @@ import _ from 'lodash';
 import AndroidPickerMonth from './AndroidPickerMonth';
 import AndroidPickerDay from './AndroidPickerDay';
 import AndroidPickerYear from './AndroidPickerYear';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import AndroidPickerDebug from './AndroidPickerDebug';
+import { ss } from './Style';
 
 const newdate = new Date();
 
 const PickerDate = (props) => {
   const [datevalue, setDatevalue] = useState(newdate);
-  const [monthindex, setMonthindex] = useState(0);
 
-  useEffect(() => {
-    if (_.isDate(datevalue)) {
-      // console.log('datevalue',datevalue);
-    }
-  }, []);
+  const [dateindex, setDateindex] = useState(newdate.getDate());
+  const [monthindex, setMonthindex] = useState(newdate.getMonth());
+  const [yearindex, setYearindex] = useState(newdate.getFullYear() - 2021);
+
+  // useEffect(() => {
+  //   if (_.isDate(datevalue)) {
+  //     // console.log('datevalue',datevalue);
+  //   }
+  // }, []);
 
   useEffect(() => {
     // props.onDatevalueChanged(datevalue);
-  }, [datevalue]);
+    // 3 + ? = 2024
+    const nd = new Date(yearindex + 2021, monthindex, dateindex + 1, 8, 8, 8);
+    setDatevalue(nd);
+  }, [dateindex, monthindex, yearindex]);
+
+  const dateOnIndexChanged = useCallback((index) => {
+    console.log(`PickerDate.AndroidPickerDay.onIndexChanged index: ${index}`);
+    setDateindex(index);
+  }, []);
+
+  const monthOnIndexChanged = useCallback((index) => {
+    console.log(`PickerDate.AndroidPickerMonth.onIndexChanged index: ${index} `);
+    setMonthindex(index);
+  }, []);
+
+  const yearOnIndexChanged = useCallback((index) => {
+    console.log(`PickerDate.AndroidPickerYear.onIndexChanged index: ${index} `);
+    setYearindex(index);
+  }, []);
 
   if (props.showdate === false) {
     return null;
@@ -33,52 +56,44 @@ const PickerDate = (props) => {
 
   return (
     <View style={styles.container}>
+      <View style={ss.viewLog}>
+        {/* console.log(today.toLocaleDateString("en-US")); // 9/17/2016 */}
+        <Text style={ss.textGreen}>
+          {datevalue.toLocaleDateString('th-TH')} {datevalue.toLocaleTimeString('th-TH')}
+        </Text>
+        {/* <Text style={ss.textGreen}>
+          {datevalue.toLocaleDateString('en-US')} {datevalue.toLocaleTimeString('en-US')}
+        </Text>
+        <Text style={ss.textGreen}>{datevalue.toISOString()}</Text> */}
+        <Text style={ss.textGreen}>{monthindex}</Text>
+      </View>
       <View style={styles.wrapper} onPress={() => props.onCancel()}>
-        <AndroidPickerDay
-          onIndexChanged={(_newdate) => {
-            const dv = datevalue;
-            const d = dv.getDate();
-            const m = dv.getMonth();
-            const y = dv.getFullYear();
-            const newdate = new Date(y, m, _newdate, 8, 0, 0);
-            setDatevalue(newdate);
+        {/* <AndroidPickerDebug
+          onIndexChanged={(txt) => {
+            console.log(txt);
           }}
-          date={datevalue}
+          // date={datevalue}
+          itemHeight={40}
+          fontSize={18}
+        /> */}
+
+        <AndroidPickerDay
+          onIndexChanged={dateOnIndexChanged}
+          dateindex={dateindex}
           itemHeight={40}
           fontSize={18}
         />
 
         <AndroidPickerMonth
-          onIndexChanged={(newmonthIndex) => {
-            try {
-              const dv = datevalue;
-              const d = dv.getDate();
-              const m = dv.getMonth();
-              const y = dv.getFullYear();
-              setMonthindex(newmonthIndex);
-              const newdate = datevalue;
-              newdate.setMonth(newmonthIndex);
-              // console.log('DatePicker.js newdate', newdate);
-              setDatevalue(newdate);
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-          monthIndex={monthindex}
-          date={datevalue}
+          onIndexChanged={monthOnIndexChanged}
+          monthindex={monthindex}
           itemHeight={40}
           fontSize={18}
         />
+
         <AndroidPickerYear
-          onIndexChanged={(_newyear) => {
-            const dv = datevalue;
-            const d = dv.getDate();
-            const m = dv.getMonth();
-            const y = dv.getFullYear();
-            const newdate = new Date(_newyear - 543, m, d, 8, 0, 0);
-            setDatevalue(newdate);
-          }}
-          date={datevalue}
+          onIndexChanged={yearOnIndexChanged}
+          yearindex={yearindex}
           itemHeight={40}
           fontSize={18}
         />
@@ -86,34 +101,41 @@ const PickerDate = (props) => {
       <View style={styles.buttons}>
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
-            style={styles.button}
+            style={ss.button}
             onPress={() => {
+              // TODO: not working now
+
               const _today = new Date();
-              const _monthIndex = _today.getMonth();
-              setDatevalue(_today);
-              setMonthindex(_monthIndex);
+              const _date = _today.getDate();
+              const _month = _today.getMonth();
+              const _year = _today.getFullYear();
+
+              // TODO: how to TODAY
+              // const nd = new Date(yearindex + 2021, monthindex, dateindex + 1, 8, 8, 8);
+              setDateindex(_date - 1);
+              setMonthindex(_month);
+              setYearindex(_year - 2021);
             }}
           >
-            <Text style={styles.buttonText}>วันนี้</Text>
+            <Text style={ss.textButton}>วันนี้</Text>
           </TouchableOpacity>
+
           <TouchableOpacity
-            style={styles.button}
+            style={ss.button}
             onPress={() => {
               props.onCancel();
             }}
           >
-            <Text style={styles.buttonText}>ยกเลิก</Text>
+            <Text style={ss.textButton}>ยกเลิก</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.button}
+            style={ss.button}
             onPress={() => {
               props.onOk(datevalue);
             }}
           >
-            <Text style={styles.buttonText}>ตกลง</Text>
+            <Text style={ss.buttonText}>ตกลง</Text>
           </TouchableOpacity>
-
-          {/* <Text style={{ color: 'red', fontSize: 20 }}>{monthindex}</Text> */}
         </View>
       </View>
 

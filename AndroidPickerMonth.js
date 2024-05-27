@@ -34,36 +34,36 @@ const MONTHS = [
   '',
 ];
 
-const AndroidPickerMonth = memo(({ date, onIndexChanged, itemHeight, fontSize, monthIndex }) => {
-  console.log('AndroidPickerMonth - render');
+const AndroidPickerMonth = memo(({ onIndexChanged, itemHeight, fontSize, monthindex }) => {
+  console.log('AndroidPickerMonth - rendering...');
 
   const monthFlatlistRef = useRef();
 
-  const [month, setMonth] = useState(0);
+  // const [month, setMonth] = useState(0);
   const [itemWidth, setItemWidth] = useState(150);
   const [items, setItems] = useState(MONTHS);
 
   useEffect(() => {
     try {
-      if (!_.isDate(date)) {
-        return;
-      }
+      console.log(`AndroidPickerMonth.useEffect[dateindex] monthindex: ${monthindex} `);
 
-      const _month = date.getMonth();
-      if (_month !== month) {
-        setMonth(_month);
-        scrollToIndex(_month);
-      }
+      // const _month = date.getMonth();
+      // if (_month !== month) {
+      //   setMonth(_month);
+      //   scrollToIndex(_month);
+      // }
+      scrollToIndex(monthindex);
     } catch (error) {
       console.log(error);
     }
-  }, [date]);
+  }, [monthindex]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const scrollToIndex = (index) => {
     try {
       if (index >= 0 && monthFlatlistRef.current.scrollToIndex) {
+        // eslint-disable-next-line no-undef
         setTimeout(() => {
           try {
             monthFlatlistRef.current.scrollToIndex({ animated: true, index: index });
@@ -79,15 +79,22 @@ const AndroidPickerMonth = memo(({ date, onIndexChanged, itemHeight, fontSize, m
     }
   };
 
-  const momentumScrollEnd = (event) => {
+  const momentumScrollEnd = useCallback((event) => {
     try {
       const y = event.nativeEvent.contentOffset.y;
       const index = Math.round(y / itemHeight);
+
+      console.log('');
+      console.log(
+        `AndroidPickerMonth.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+          scrollY
+        )} `
+      );
       onIndexChanged(index);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
   const renderItem = useCallback(({ item, index }) => {
     try {

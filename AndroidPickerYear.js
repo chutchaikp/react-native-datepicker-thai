@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -11,50 +11,46 @@ import {
 } from 'react-native';
 import _ from 'lodash';
 
-const AndroidPickerYear = ({ date, onIndexChanged, itemHeight, fontSize }) => {
-  // console.log('AndroidPickerYear - render');
+const fy = new Date().getFullYear();
+const y = _.range(fy - 3 + 543, fy + 543 + 1);
+const YEARS = ['', '', '', ...y, '', '', ''];
+
+const AndroidPickerYear = memo(({ onIndexChanged, itemHeight, fontSize, yearindex }) => {
+  console.log('AndroidPickerYear - rendering...');
 
   const yearFlatlistRef = useRef();
 
-  // const { onIndexChange, itemHeight, fontSize } = p rops;
-
-  const [year, setYear] = useState(1999);
+  // const [year, setYear] = useState(1999);
 
   const [itemWidth, setItemWidth] = useState(100);
-
-  const [items, setItems] = useState(() => {
-    const fy = new Date().getFullYear();
-    const y = _.range(fy - 100 + 543, fy + 543 + 1);
-    return ['', '', '', ...y, '', '', ''];
-  });
+  const [items, setItems] = useState(YEARS);
 
   useEffect(() => {
     try {
-      if (!_.isDate(date)) {
-        return;
-      }
+      console.log(`AndroidPickerYear.useEffect[dateindex] dateindex: ${yearindex} `);
 
-      const _year = date.getFullYear();
-      if (_year !== year) {
-        setYear(_year);
-        const index = items.indexOf(parseInt(_year) + 543);
+      // const _year = date.getFullYear();
+      // if (_year !== year) {
+      //   setYear(_year);
+      //   const index = items.indexOf(parseInt(_year) + 543);
+      //   // console.log(items);
+      //   // console.log('_year', _year);
+      //   // console.log(items.indexOf(parseInt(_year) + 543));
+      //   scrollToIndex(index - 3); // onload
+      // }
 
-        // console.log(items);
-        // console.log('_year', _year);
-        // console.log(items.indexOf(parseInt(_year) + 543));
-
-        scrollToIndex(index - 3); // onload
-      }
+      scrollToIndex(yearindex);
     } catch (error) {
       console.log(error);
     }
-  }, [date]);
+  }, [yearindex]);
 
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const scrollToIndex = (index) => {
     if (index && yearFlatlistRef.current.scrollToIndex) {
       //console.log('scroll to index called !');
+      // eslint-disable-next-line no-undef
       setTimeout(() => {
         yearFlatlistRef.current.scrollToIndex({ animated: true, index: index });
       }, 50);
@@ -66,14 +62,20 @@ const AndroidPickerYear = ({ date, onIndexChanged, itemHeight, fontSize }) => {
     return _key;
   }, []);
 
-  const momentumScrollEnd = (event) => {
+  const momentumScrollEnd = useCallback((event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    // console.log(index, items[index + 3]);
-    onIndexChanged(items[index + 3]);
-  };
 
-  const renderItem = ({ item, index }) => {
+    console.log('');
+    console.log(
+      `AndroidPickerYear.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+        scrollY
+      )} `
+    );
+    onIndexChanged(index);
+  }, []);
+
+  const renderItem = useCallback(({ item, index }) => {
     try {
       const inputRange = [
         (index - 6) * itemHeight,
@@ -111,7 +113,7 @@ const AndroidPickerYear = ({ date, onIndexChanged, itemHeight, fontSize }) => {
       console.log(error);
       return null;
     }
-  };
+  }, []);
 
   try {
     return (
@@ -171,7 +173,7 @@ const AndroidPickerYear = ({ date, onIndexChanged, itemHeight, fontSize }) => {
   } catch (error) {
     console.log(error);
   }
-};
+});
 
 const styles = StyleSheet.create({
   com: {

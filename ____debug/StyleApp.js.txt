@@ -1,0 +1,15 @@
+import { Text, TouchableOpacity, View } from 'react-native';
+import { ss } from './Style';
+
+const StyleApp = () => {
+  return (
+    <View>
+      <Text style={ss.textRed}>StyleApp 123 </Text>
+
+      {/* <TouchableOpacity style={ss.button}>
+        <Text style={ss.textButton}>button</Text>
+      </TouchableOpacity> */}
+    </View>
+  );
+};
+export default StyleApp;
