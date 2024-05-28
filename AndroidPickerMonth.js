@@ -1,17 +1,6 @@
 import { useEffect, useRef, useState, memo, useCallback } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Animated,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
-import _ from "lodash";
+import { StyleSheet, Text, View, SafeAreaView, Animated } from "react-native";
+// import _ from "lodash";
 
 const MONTHS = [
   "",
@@ -41,8 +30,8 @@ const AndroidPickerMonth = memo(
     const monthFlatlistRef = useRef();
 
     // const [month, setMonth] = useState(0);
-    const [itemWidth, setItemWidth] = useState(150);
-    const [items, setItems] = useState(MONTHS);
+    const [itemWidth] = useState(150);
+    const [items] = useState(MONTHS);
 
     useEffect(() => {
       try {
@@ -265,6 +254,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// AndroidPickerMonth.displayName = 'AndroidPickerMonth';
+AndroidPickerMonth.displayName = "AndroidPickerMonth";
 
 export default AndroidPickerMonth;

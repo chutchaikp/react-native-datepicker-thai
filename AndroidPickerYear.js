@@ -1,14 +1,5 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Animated,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Animated } from "react-native";
 import _ from "lodash";
 
 const fy = new Date().getFullYear();
@@ -21,10 +12,8 @@ const AndroidPickerYear = memo(
 
     const yearFlatlistRef = useRef();
 
-    // const [year, setYear] = useState(1999);
-
-    const [itemWidth, setItemWidth] = useState(100);
-    const [items, setItems] = useState(YEARS);
+    const [itemWidth] = useState(100);
+    const [items] = useState(YEARS);
 
     useEffect(() => {
       try {
@@ -251,6 +240,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// AndroidPickerYear.displayName = 'AndroidPickerYear';
+AndroidPickerYear.displayName = "AndroidPickerYear";
 
 export default AndroidPickerYear;

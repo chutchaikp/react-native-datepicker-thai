@@ -1,14 +1,5 @@
 import { useEffect, useRef, useState, memo, useCallback } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Animated,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Animated } from "react-native";
 import _ from "lodash";
 
 const m = _.range(0, 60);
@@ -19,8 +10,8 @@ const AndroidPickerTimeMinute = memo(
     const minuteFlatlistRef = useRef();
 
     // const [minute, setMinute] = useState(0);
-    const [itemWidth, setItemWidth] = useState(150);
-    const [items, setItems] = useState(MINUTES);
+    const [itemWidth] = useState(150);
+    const [items] = useState(MINUTES);
 
     useEffect(() => {
       try {
@@ -219,5 +210,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+AndroidPickerTimeMinute.displayName = "AndroidPickerTimeMinute";
 
 export default AndroidPickerTimeMinute;

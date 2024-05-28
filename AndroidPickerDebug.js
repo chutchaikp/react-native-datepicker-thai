@@ -1,14 +1,5 @@
-import { useEffect, useRef, useState, memo, useCallback } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Animated,
-} from "react-native";
+import { useState } from "react";
+import { FlatList, StyleSheet, Text, View, SafeAreaView } from "react-native";
 import _ from "lodash";
 
 const y = _.range(1, 32);
@@ -18,7 +9,7 @@ const AndroidPickerDebug = ({ onIndexChanged, itemHeight, fontSize, date }) => {
   console.log("AndroidPickerDebug - render...");
 
   //   const {items, onIndexChange, itemHeight} = props;
-  const [items, setItems] = useState(DAYS);
+  const [items] = useState(DAYS);
 
   const momentumScrollEnd = (event) => {
     const y = event.nativeEvent.contentOffset.y;

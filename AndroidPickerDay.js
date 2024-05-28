@@ -1,14 +1,5 @@
 import { useEffect, useRef, useState, memo, useCallback } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  StatusBar,
-  Animated,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, Animated } from "react-native";
 import _ from "lodash";
 
 const y = _.range(1, 32);
@@ -21,8 +12,8 @@ const AndroidPickerDay = memo(
     const dayFlatlistRef = useRef();
 
     // const [dayOfMonth, setDayOfMonth] = useState(1);
-    const [itemWidth, setItemWidth] = useState(50);
-    const [items, setItems] = useState(DAYS);
+    const [itemWidth] = useState(50);
+    const [items] = useState(DAYS);
 
     useEffect(() => {
       try {
@@ -218,6 +209,6 @@ const styles = StyleSheet.create({
   },
 });
 
-AndroidPickerDay.displayName = "AndroidPickerDay";
+// AndroidPickerDay.displayName = "AndroidPickerDay";
 
 export default AndroidPickerDay;

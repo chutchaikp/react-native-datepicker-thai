@@ -1,16 +1,6 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import _ from "lodash";
-import {
-  Animated,
-  Button,
-  FlatList,
-  Modal,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import PickerDate from "./PickerDate";
 import PickerTime from "./PickerTime";
