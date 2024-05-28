@@ -1,28 +1,32 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import _ from 'lodash';
+import _ from "lodash";
 
-import AndroidPickerMonth from './AndroidPickerMonth';
-import AndroidPickerDay from './AndroidPickerDay';
-import AndroidPickerYear from './AndroidPickerYear';
-import { useCallback, useEffect, useState } from 'react';
-import AndroidPickerDebug from './AndroidPickerDebug';
-import { ss } from './Style';
+import AndroidPickerMonth from "./AndroidPickerMonth";
+import AndroidPickerDay from "./AndroidPickerDay";
+import AndroidPickerYear from "./AndroidPickerYear";
+import { useCallback, useEffect, useState } from "react";
 
-const newdate = new Date();
+import { ss } from "./Style";
 
 const PickerDate = (props) => {
-  const [datevalue, setDatevalue] = useState(newdate);
+  const [datevalue, setDatevalue] = useState(null);
 
-  const [dateindex, setDateindex] = useState(newdate.getDate());
-  const [monthindex, setMonthindex] = useState(newdate.getMonth());
-  const [yearindex, setYearindex] = useState(newdate.getFullYear() - 2021);
+  const [dateindex, setDateindex] = useState(null);
+  const [monthindex, setMonthindex] = useState(null);
+  const [yearindex, setYearindex] = useState(null);
 
-  // useEffect(() => {
-  //   if (_.isDate(datevalue)) {
-  //     // console.log('datevalue',datevalue);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const newdate = new Date();
+    const d = newdate.getDate();
+    const m = newdate.getMonth();
+    const y = newdate.getFullYear();
+
+    setDatevalue(newdate);
+    setDateindex(d - 1);
+    setMonthindex(m);
+    setYearindex(y - 2021);
+  }, []);
 
   useEffect(() => {
     // props.onDatevalueChanged(datevalue);
@@ -37,7 +41,9 @@ const PickerDate = (props) => {
   }, []);
 
   const monthOnIndexChanged = useCallback((index) => {
-    console.log(`PickerDate.AndroidPickerMonth.onIndexChanged index: ${index} `);
+    console.log(
+      `PickerDate.AndroidPickerMonth.onIndexChanged index: ${index} `,
+    );
     setMonthindex(index);
   }, []);
 
@@ -50,7 +56,7 @@ const PickerDate = (props) => {
     return null;
   }
   if (!_.isDate(datevalue)) {
-    console.log('===============================');
+    console.log("===============================");
     return <Text>Loading..........</Text>;
   }
 
@@ -59,24 +65,12 @@ const PickerDate = (props) => {
       <View style={ss.viewLog}>
         {/* console.log(today.toLocaleDateString("en-US")); // 9/17/2016 */}
         <Text style={ss.textGreen}>
-          {datevalue.toLocaleDateString('th-TH')} {datevalue.toLocaleTimeString('th-TH')}
+          {datevalue.toLocaleDateString("th-TH")}{" "}
+          {datevalue.toLocaleTimeString("th-TH")}
         </Text>
-        {/* <Text style={ss.textGreen}>
-          {datevalue.toLocaleDateString('en-US')} {datevalue.toLocaleTimeString('en-US')}
-        </Text>
-        <Text style={ss.textGreen}>{datevalue.toISOString()}</Text> */}
         <Text style={ss.textGreen}>{monthindex}</Text>
       </View>
       <View style={styles.wrapper} onPress={() => props.onCancel()}>
-        {/* <AndroidPickerDebug
-          onIndexChanged={(txt) => {
-            console.log(txt);
-          }}
-          // date={datevalue}
-          itemHeight={40}
-          fontSize={18}
-        /> */}
-
         <AndroidPickerDay
           onIndexChanged={dateOnIndexChanged}
           dateindex={dateindex}
@@ -101,40 +95,33 @@ const PickerDate = (props) => {
       <View style={styles.buttons}>
         <View style={styles.buttonWrapper}>
           <TouchableOpacity
-            style={ss.button}
             onPress={() => {
-              // TODO: not working now
-
               const _today = new Date();
               const _date = _today.getDate();
               const _month = _today.getMonth();
               const _year = _today.getFullYear();
 
-              // TODO: how to TODAY
-              // const nd = new Date(yearindex + 2021, monthindex, dateindex + 1, 8, 8, 8);
               setDateindex(_date - 1);
               setMonthindex(_month);
               setYearindex(_year - 2021);
             }}
           >
-            <Text style={ss.textButton}>วันนี้</Text>
+            <Text style={ss.textBlue}>วันนี้</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={ss.button}
             onPress={() => {
               props.onCancel();
             }}
           >
-            <Text style={ss.textButton}>ยกเลิก</Text>
+            <Text style={ss.textBlue}>ยกเลิก</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={ss.button}
             onPress={() => {
               props.onOk(datevalue);
             }}
           >
-            <Text style={ss.buttonText}>ตกลง</Text>
+            <Text style={ss.textBlue}>ตกลง</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -152,58 +139,58 @@ const styles = StyleSheet.create({
   container: {
     padding: 0,
     margin: 0,
-    backgroundColor: '#1f1f1fba',
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "#1f1f1fba",
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     zIndex: 100,
     // left: 0,
     // top: 0,
   },
   wrapper: {
     flex: 3,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
     // fix show line issue
-    width: '100%',
+    width: "100%",
     // z Index: 100,
   },
   buttons: {
     flex: 2,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   buttonWrapper: {
     width: 300,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 50,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
     gap: 10,
   },
   button: {
     width: 55,
     height: 30,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: 'blue',
+    borderColor: "blue",
   },
   buttonText: {
-    color: 'blue',
-    fontWeight: '700',
+    color: "blue",
+    fontWeight: "700",
   },
   textResult: {
-    color: 'red',
+    color: "red",
     fontSize: 25,
   },
 });

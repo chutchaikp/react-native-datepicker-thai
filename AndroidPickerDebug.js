@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, memo, useCallback } from 'react';
+import { useEffect, useRef, useState, memo, useCallback } from "react";
 import {
   FlatList,
   StyleSheet,
@@ -8,14 +8,14 @@ import {
   SafeAreaView,
   StatusBar,
   Animated,
-} from 'react-native';
-import _ from 'lodash';
+} from "react-native";
+import _ from "lodash";
 
 const y = _.range(1, 32);
-const DAYS = ['', '', '', ...y, '', '', ''];
+const DAYS = ["", "", "", ...y, "", "", ""];
 
 const AndroidPickerDebug = ({ onIndexChanged, itemHeight, fontSize, date }) => {
-  console.log('AndroidPickerDebug - render...');
+  console.log("AndroidPickerDebug - render...");
 
   //   const {items, onIndexChange, itemHeight} = props;
   const [items, setItems] = useState(DAYS);
@@ -23,12 +23,14 @@ const AndroidPickerDebug = ({ onIndexChanged, itemHeight, fontSize, date }) => {
   const momentumScrollEnd = (event) => {
     const y = event.nativeEvent.contentOffset.y;
     const index = Math.round(y / itemHeight);
-    console.log('index', index);
+    console.log("index", index);
     onIndexChanged(index);
   };
 
   const renderItem = ({ item }) => {
-    return <Text style={[styles.pickerItem, { height: itemHeight }]}>{item}</Text>;
+    return (
+      <Text style={[styles.pickerItem, { height: itemHeight }]}>{item}</Text>
+    );
   };
 
   return (
@@ -121,17 +123,17 @@ const AndroidPickerDebug = ({ onIndexChanged, itemHeight, fontSize, date }) => {
 
 const styles = StyleSheet.create({
   com: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "white",
     padding: 0,
     margin: 0,
   },
   container: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center",
     padding: 0,
     margin: 0,
   },
@@ -139,21 +141,21 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   pickerItem: {
-    textAlign: 'center',
-    color: '#000',
+    textAlign: "center",
+    color: "#000",
   },
   indicatorHolder: {
-    position: 'absolute',
-    backgroundColor: 'silver',
+    position: "absolute",
+    backgroundColor: "silver",
   },
   indicator: {
     width: 50,
     height: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
   },
   animatedContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
