@@ -209,6 +209,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// AndroidPickerDay.displayName = "AndroidPickerDay";
+AndroidPickerDay.displayName = "AndroidPickerDay";
 
 export default AndroidPickerDay;

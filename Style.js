@@ -51,6 +51,10 @@ export const ss = StyleSheet.create({
     color: "#0f53ff",
     fontSize: 20,
   },
+  textResult: {
+    color: "#000000ff",
+    fontSize: 20,
+  },
   viewRow: {
     display: "flex",
     flexDirection: "row",
