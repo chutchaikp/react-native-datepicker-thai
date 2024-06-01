@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
-import AndroidPickerTimeHour from "./AndroidPickerTimeHour";
-import AndroidPickerTimeMinute from "./AndroidPickerTimeMinute";
-import { ss } from "./Style";
+import AndroidPickerTimeHour from "./components/AndroidPickerTimeHour";
+import AndroidPickerTimeMinute from "./components/AndroidPickerTimeMinute";
+import { ss } from "./styles/Style";
 
 // const newdate = new Date();
 

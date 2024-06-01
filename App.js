@@ -2,11 +2,23 @@ import { useState } from "react";
 import _ from "lodash";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import PickerDate from "./PickerDate";
-import PickerTime from "./PickerTime";
-import { ss } from "./Style";
+import PickerDate from "./src/PickerDate";
+import PickerTime from "./src/PickerTime";
+import LifeCycleApp from "./src/debugs/LifeCycleApp.js";
+
+import { ss } from "./src/styles/Style";
+import TimerApp from "./src/debugs/TimerApp.js";
 
 const App = () => {
+  return (
+    <View>
+      <LifeCycleApp />
+      {/* <TimerApp /> */}
+    </View>
+  );
+};
+
+const App1 = () => {
   const [count, setCount] = useState(0);
 
   const [datevalue, setDatevalue] = useState(null);

@@ -2,12 +2,12 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import _ from "lodash";
 
-import AndroidPickerMonth from "./AndroidPickerMonth";
-import AndroidPickerDay from "./AndroidPickerDay";
-import AndroidPickerYear from "./AndroidPickerYear";
+import AndroidPickerMonth from "./components/AndroidPickerMonth";
+import AndroidPickerDay from "./components/AndroidPickerDay";
+import AndroidPickerYear from "./components/AndroidPickerYear";
 import { useCallback, useEffect, useState } from "react";
 
-import { ss } from "./Style";
+import { ss } from "./styles/Style";
 
 const PickerDate = (props) => {
   const [datevalue, setDatevalue] = useState(null);
