@@ -4,11 +4,9 @@ import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
 import AndroidPickerTimeHour from "./components/AndroidPickerTimeHour";
 import AndroidPickerTimeMinute from "./components/AndroidPickerTimeMinute";
-import { ss } from "./styles/Style";
+import { ss, ssTime } from "./styles/Styles";
 
-// const newdate = new Date();
-
-const PickerTime = (props) => {
+const PickerTime = ({ onOk, onCancel, onOther }) => {
   const [datevalue, setDatevalue] = useState(null);
 
   const [hourindex, setHourindex] = useState(null);
@@ -48,23 +46,23 @@ const PickerTime = (props) => {
     setMinuteindex(index);
   }, []);
 
-  if (props.showtime === false) {
-    return null;
-  }
+  // if (p rops.showtime === false) {
+  //   return null;
+  // }
   if (!_.isDate(datevalue)) {
     console.log("===============================");
     return <Text>Loading..........</Text>;
   }
 
   return (
-    <View style={styles.container}>
-      <View style={ss.viewLog}>
+    <View style={ssTime.container}>
+      {/* <View style={ss.viewLog}>
         <Text style={ss.textGreen}>
           {datevalue.toLocaleTimeString("th-TH")}
         </Text>
-      </View>
+      </View> */}
 
-      <View style={styles.wrapper}>
+      <View style={ssTime.wrapper}>
         <AndroidPickerTimeHour
           onIndexChanged={hourOnIndexChanged}
           hourindex={hourindex}
@@ -94,94 +92,45 @@ const PickerTime = (props) => {
         <Text style={{ width: 150, textAlign: "center" }}>นาที</Text>
       </View>
 
-      <View style={styles.buttons}>
-        <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={ss.button}
-            onPress={() => {
-              const _now = new Date();
-              const _hourindex = _now.getHours();
-              const _minuteindex = _now.getMinutes();
+      {/* <View style={ssTime.buttons}> */}
+      <View style={ssTime.buttonWrapper}>
+        <TouchableOpacity
+          style={ss.button}
+          onPress={() => {
+            const _now = new Date();
+            const _hourindex = _now.getHours();
+            const _minuteindex = _now.getMinutes();
 
-              console.log(`hour: ${_hourindex} minute: ${_minuteindex}`);
+            console.log(`hour: ${_hourindex} minute: ${_minuteindex}`);
 
-              setHourindex(_hourindex);
-              setMinuteindex(_minuteindex);
-            }}
-          >
-            <Text style={ss.textButton}>NOW</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={ss.button}
-            onPress={() => {
-              props.onCancel();
-            }}
-          >
-            <Text style={ss.textButton}>Cancel</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={ss.button}
-            onPress={() => {
-              props.onOk(datevalue);
-            }}
-          >
-            <Text style={ss.textButton}>OK</Text>
-          </TouchableOpacity>
+            setHourindex(_hourindex);
+            setMinuteindex(_minuteindex);
+          }}
+        >
+          <Text style={ss.textButton}>NOW</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={ss.button}
+          onPress={() => {
+            onCancel();
+          }}
+        >
+          <Text style={ss.textButton}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={ss.button}
+          onPress={() => {
+            onOk(datevalue);
+          }}
+        >
+          <Text style={ss.textButton}>OK</Text>
+        </TouchableOpacity>
 
-          {/* <Text style={{ color: 'red', fontSize: 20 }}>{monthindex}</Text> */}
-        </View>
+        {/* <Text style={{ color: 'red', fontSize: 20 }}>{monthindex}</Text> */}
       </View>
-
-      {/* <Text style={{ color: 'red', fontSize: 20 }}>MonthIndex {monthindex}</Text> */}
-      {/* {__DEV__ && _.isDate(datevalue) && (
-        <Text style={{ fontSize: 22 }}>{datevalue.toISOString()}</Text>
-      )}
-       */}
+      {/* </View> */}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 0,
-    margin: 0,
-    backgroundColor: "#1f1f1f8a",
-    height: "100%",
-    width: "100%",
-    // flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "absolute",
-    zIndex: 100,
-  },
-  wrapper: {
-    flex: 3,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "flex-end",
-    // fix show line issue
-    width: "100%",
-    // z Index: 1,
-  },
-  buttons: {
-    flex: 2,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  buttonWrapper: {
-    width: 300,
-    backgroundColor: "white",
-    height: 50,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 10,
-  },
-});
 
 export default PickerTime;

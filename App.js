@@ -6,14 +6,21 @@ import PickerDate from "./src/PickerDate";
 import PickerTime from "./src/PickerTime";
 import LifeCycleApp from "./src/debugs/LifeCycleApp.js";
 
-import { ss } from "./src/styles/Style";
+import { ss } from "./src/styles/Styles.js";
 import TimerApp from "./src/debugs/TimerApp.js";
+import BWModalApp from "./src/debugs/BWModalApp.js";
+import BWDatetimeSelectorApp from "./src/debugs/BWDatetimeSelectorApp.js";
+import LifeCycle2App from "./src/debugs/LifeCycle2App.js";
 
 const App = () => {
   return (
-    <View>
-      <LifeCycleApp />
+    <View style={ss.viewFull}>
+      {/* <LifeCycleApp /> */}
+      {/* <LifeCycle2App /> */}
       {/* <TimerApp /> */}
+      {/* <BWModalApp /> */}
+
+      <BWDatetimeSelectorApp />
     </View>
   );
 };

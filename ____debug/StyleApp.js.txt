@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from 'react-native';
-import { ss } from './Style';
+import { ss } from './Styles';
 
 const StyleApp = () => {
   return (
