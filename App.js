@@ -1,26 +1,71 @@
 import { useState } from "react";
 import _ from "lodash";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import PickerDate from "./src/PickerDate";
 import PickerTime from "./src/PickerTime";
-import LifeCycleApp from "./src/debugs/LifeCycleApp.js";
+// import LifeCycleApp from "./src/debugs/LifeCycleApp.js";
 
 import { ss } from "./src/styles/Styles.js";
-import TimerApp from "./src/debugs/TimerApp.js";
-import BWModalApp from "./src/debugs/BWModalApp.js";
-import BWDatetimeSelectorApp from "./src/debugs/BWDatetimeSelectorApp.js";
-import LifeCycle2App from "./src/debugs/LifeCycle2App.js";
+import CustomSwitch from "./src/components/switch2/CustomSwitch.js";
+// import TimerApp from "./src/debugs/TimerApp.js";
+// import BWModalApp from "./src/debugs/BWModalApp.js";
+// import BWDatetimeSelectorApp from "./src/debugs/BWDatetimeSelectorApp.js";
+// import LifeCycle2App from "./src/debugs/LifeCycle2App.js";
+// import SwitchApp from "./src/components/switch/SwitchApp.js";
 
 const App = () => {
+  const [onleft, setOnleft] = useState(false);
+
   return (
-    <View style={ss.viewFull}>
+    <View style={{ ...ss.viewFull, backgroundColor: "#1f1f1f" }}>
       {/* <LifeCycleApp /> */}
       {/* <LifeCycle2App /> */}
       {/* <TimerApp /> */}
       {/* <BWModalApp /> */}
+      {/* <BWDatetimeSelectorApp /> */}
 
-      <BWDatetimeSelectorApp />
+      {/* https://github.com/arshigtx/react-native-custom-switch */}
+
+      <TouchableOpacity onPress={() => setOnleft(!onleft)}>
+        <Text style={{ color: "white", fontSize: 33 }}>
+          {onleft ? "on" : "off"}
+        </Text>
+      </TouchableOpacity>
+
+      <CustomSwitch
+        startOnLeft={onleft}
+        buttonWidth={20}
+        switchWidth={70}
+        buttonPadding={2}
+        // buttonText={"o"}
+        // onSwitchButtonText={"o"}
+        switchBackgroundColor={"#cbcbcb"}
+        onSwitchBackgroundColor={"#09c628"}
+        buttonColor={"#EFE6DD"}
+        switchBorderColor={"#F3DFA2"}
+        buttonBorderColor={"#997048"}
+        switchLeftText={"เปิด"}
+        switchLeftTextStyle={{ color: "green", fontSize: 18 }}
+        switchRightText={"ปิด"}
+        switchRightTextStyle={{ color: "brown", fontSize: 18 }}
+
+        // switchBackgroundColor={"#7EBDC2"}
+        // onSwitchBackgroundColor={"#BB4430"}
+      />
+
+      <Text style={{ color: "white" }}>จับกลุ่มยานพาหนะ</Text>
+
+      {/* <CustomSwitch 
+  buttonText={'Hello'}
+  onSwitchButtonText={'Bye'}
+/>    */}
     </View>
   );
 };

@@ -2,9 +2,9 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import _ from "lodash";
 
-import AndroidPickerMonth from "./components/AndroidPickerMonth";
-import AndroidPickerDay from "./components/AndroidPickerDay";
-import AndroidPickerYear from "./components/AndroidPickerYear";
+import AndroidPickerMonth from "./components/DatetimeSelector/AndroidPickerMonth";
+import AndroidPickerDay from "./components/DatetimeSelector/AndroidPickerDay";
+import AndroidPickerYear from "./components/DatetimeSelector/AndroidPickerYear";
 import { useCallback, useEffect, useState } from "react";
 
 import { ss, ssDate } from "./styles/Styles";

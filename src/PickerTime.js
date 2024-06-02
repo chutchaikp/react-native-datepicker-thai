@@ -2,8 +2,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
-import AndroidPickerTimeHour from "./components/AndroidPickerTimeHour";
-import AndroidPickerTimeMinute from "./components/AndroidPickerTimeMinute";
+import AndroidPickerTimeHour from "./components/DatetimeSelector/AndroidPickerTimeHour";
+import AndroidPickerTimeMinute from "./components/DatetimeSelector/AndroidPickerTimeMinute";
 import { ss, ssTime } from "./styles/Styles";
 
 const PickerTime = ({ onOk, onCancel, onOther }) => {
