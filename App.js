@@ -41,8 +41,8 @@ const App = () => {
 
       <CustomSwitch
         startOnLeft={onleft}
-        buttonWidth={20}
-        switchWidth={70}
+        buttonWidth={30}
+        switchWidth={120}
         buttonPadding={2}
         // buttonText={"o"}
         // onSwitchButtonText={"o"}
@@ -52,9 +52,9 @@ const App = () => {
         switchBorderColor={"#F3DFA2"}
         buttonBorderColor={"#997048"}
         switchLeftText={"เปิด"}
-        switchLeftTextStyle={{ color: "green", fontSize: 18 }}
+        switchLeftTextStyle={{ color: "green", padding: 10 }}
         switchRightText={"ปิด"}
-        switchRightTextStyle={{ color: "brown", fontSize: 18 }}
+        switchRightTextStyle={{ color: "brown", padding: 10 }}
 
         // switchBackgroundColor={"#7EBDC2"}
         // onSwitchBackgroundColor={"#BB4430"}
