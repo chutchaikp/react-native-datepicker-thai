@@ -1,3 +1,5 @@
+// Android not working :(
+
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
