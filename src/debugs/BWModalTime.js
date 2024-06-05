@@ -2,9 +2,9 @@ import { Modal, Text, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
 import _ from "lodash";
 import { ss, ssModal } from "../styles/Styles";
-import PickerTime from "../PickerTime";
+import BWPickerTime from "./BWPickerTime";
 
-const BWTimeModal = () => {
+const BWModalTime = () => {
   const [show, setShow] = useState(false);
   const [datevalue, setDatevalue] = useState(null);
 
@@ -32,7 +32,7 @@ const BWTimeModal = () => {
       >
         <View style={ssModal.centeredView}>
           <View style={ssModal.modalView}>
-            <PickerTime
+            <BWPickerTime
               onOk={(val) => {
                 setDatevalue(val);
                 setShow(false);
@@ -48,4 +48,4 @@ const BWTimeModal = () => {
   );
 };
 
-export default BWTimeModal;
+export default BWModalTime;

@@ -2,11 +2,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import _ from "lodash";
 import { useCallback, useEffect, useState } from "react";
-import AndroidPickerTimeHour from "./components/DatetimeSelector/AndroidPickerTimeHour";
-import AndroidPickerTimeMinute from "./components/DatetimeSelector/AndroidPickerTimeMinute";
-import { ss, ssTime } from "./styles/Styles";
+import AndroidPickerTimeHour from "../components/DatetimeSelector/AndroidPickerTimeHour";
+import AndroidPickerTimeMinute from "../components/DatetimeSelector/AndroidPickerTimeMinute";
+import { ss, ssTime } from "../styles/Styles";
 
-const PickerTime = ({ onOk, onCancel, onOther }) => {
+const BWPickerTime = ({ onOk, onCancel, onOther }) => {
   const [datevalue, setDatevalue] = useState(null);
 
   const [hourindex, setHourindex] = useState(null);
@@ -133,4 +133,4 @@ const PickerTime = ({ onOk, onCancel, onOther }) => {
   );
 };
 
-export default PickerTime;
+export default BWPickerTime;

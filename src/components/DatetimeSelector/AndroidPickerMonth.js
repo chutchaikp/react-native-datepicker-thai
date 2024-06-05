@@ -25,7 +25,7 @@ const MONTHS = [
 
 const AndroidPickerMonth = memo(
   ({ onIndexChanged, itemHeight, fontSize, monthindex }) => {
-    console.log("AndroidPickerMonth - rendering...");
+    // console.log("AndroidPickerMonth - rendering...");
 
     const monthFlatlistRef = useRef();
 
@@ -35,9 +35,9 @@ const AndroidPickerMonth = memo(
 
     useEffect(() => {
       try {
-        console.log(
-          `AndroidPickerMonth.useEffect[dateindex] monthindex: ${monthindex} `,
-        );
+        // console.log(
+        //   `AndroidPickerMonth.useEffect[dateindex] monthindex: ${monthindex} `,
+        // );
 
         // const _month = date.getMonth();
         // if (_month !== month) {
@@ -62,7 +62,7 @@ const AndroidPickerMonth = memo(
         if (index >= 0 && monthFlatlistRef.current.scrollToIndex) {
           window.setTimeout(() => {
             try {
-              console.log(`===========> Month. scrollToIndex index: ${index}`);
+              // console.log(`===========> Month. scrollToIndex index: ${index}`);
               monthFlatlistRef.current.scrollToIndex({
                 animated: true,
                 index: index,
@@ -88,12 +88,12 @@ const AndroidPickerMonth = memo(
         const y = event.nativeEvent.contentOffset.y;
         const index = Math.round(y / itemHeight);
 
-        console.log("");
-        console.log(
-          `AndroidPickerMonth.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
-            scrollY,
-          )} `,
-        );
+        // console.log("");
+        // console.log(
+        //   `AndroidPickerMonth.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+        //     scrollY,
+        //   )} `,
+        // );
 
         canMomentum.current = false;
         onIndexChanged(index);

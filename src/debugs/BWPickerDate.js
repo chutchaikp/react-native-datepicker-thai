@@ -2,14 +2,24 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import _ from "lodash";
 
-import AndroidPickerMonth from "./components/DatetimeSelector/AndroidPickerMonth";
-import AndroidPickerDay from "./components/DatetimeSelector/AndroidPickerDay";
-import AndroidPickerYear from "./components/DatetimeSelector/AndroidPickerYear";
-import { useCallback, useEffect, useState } from "react";
+import AndroidPickerMonth from "../components/DatetimeSelector/AndroidPickerMonth";
+import AndroidPickerDay from "../components/DatetimeSelector/AndroidPickerDay";
+import AndroidPickerYear from "../components/DatetimeSelector/AndroidPickerYear";
+import { memo, useCallback, useEffect, useState } from "react";
 
-import { ss, ssDate } from "./styles/Styles";
+import { useDispatch, useSelector } from "react-redux";
+import { selectorChange, dateFrom, dateTo } from "../redux/dateSelectorSlice";
 
-const PickerDate = (props) => {
+import { ss, ssDate } from "../styles/Styles";
+import moment from "moment";
+
+// type = [ "from", "to" ]
+const BWPickerDate = memo(({ type, onCancel, onOk }) => {
+  const _dateFrom = useSelector(dateFrom);
+  const _dateTo = useSelector(dateTo);
+
+  const dispatch = useDispatch();
+
   const [datevalue, setDatevalue] = useState(null);
 
   const [dateindex, setDateindex] = useState(null);
@@ -17,26 +27,40 @@ const PickerDate = (props) => {
   const [yearindex, setYearindex] = useState(null);
 
   useEffect(() => {
-    const newdate = new Date();
-    const d = newdate.getDate();
-    const m = newdate.getMonth();
-    const y = newdate.getFullYear();
+    let newdate = moment(_dateFrom); //  new Date();
+    if (type === "to") {
+      newdate = moment(_dateTo);
+    }
 
-    setDatevalue(newdate);
+    const d = newdate.date(); // .getDate();
+    const m = newdate.month(); //.getMonth();
+    const y = newdate.year(); // .getFullYear();
+
+    // setDatevalue(newdate);
     setDateindex(d - 1);
     setMonthindex(m);
     setYearindex(y - 2021);
   }, []);
 
   useEffect(() => {
-    // props.onDatevalueChanged(datevalue);
+    // .onDatevalueChanged(datevalue);
     // 3 + ? = 2024
-    const nd = new Date(yearindex + 2021, monthindex, dateindex + 1, 8, 8, 8);
-    setDatevalue(nd);
-  }, [dateindex, monthindex, yearindex]);
+    const m = moment().utcOffset(7 * 60);
+    m.set({
+      year: yearindex + 2021,
+      month: monthindex,
+      date: dateindex + 1,
+      hour: 0,
+      minute: 0,
+    });
+    // const nd = new Date(yearindex + 2021, monthindex, dateindex + 1, 8, 8, 8);
+    const iso = m.toISOString();
+    console.log(`iso: ${iso} type: ${type}`);
+    setDatevalue(iso);
+  }, [dateindex, monthindex, type, yearindex]);
 
   const dateOnIndexChanged = useCallback((index) => {
-    console.log(`PickerDate.AndroidPickerDay.onIndexChanged index: ${index}`);
+    // console.log(`PickerDate.AndroidPickerDay.onIndexChanged index: ${index}`);
     setDateindex(index);
   }, []);
 
@@ -52,17 +76,9 @@ const PickerDate = (props) => {
     setYearindex(index);
   }, []);
 
-  if (props.showdate === false) {
-    return null;
-  }
-  if (!_.isDate(datevalue)) {
-    console.log("===============================");
-    return <Text>Loading..........</Text>;
-  }
-
   return (
     <View style={ssDate.container}>
-      <View style={ssDate.wrapper} onPress={() => props.onCancel()}>
+      <View style={ssDate.wrapper} onPress={() => onCancel()}>
         <AndroidPickerDay
           onIndexChanged={dateOnIndexChanged}
           dateindex={dateindex}
@@ -84,7 +100,7 @@ const PickerDate = (props) => {
           fontSize={18}
         />
       </View>
-      {/* <View style={ssDate.buttons}> */}
+
       <View style={ssDate.buttonWrapper}>
         <TouchableOpacity
           onPress={() => {
@@ -103,14 +119,21 @@ const PickerDate = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.onCancel();
+            onCancel();
           }}
         >
           <Text style={ss.textBlue}>ยกเลิก</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            props.onOk(datevalue);
+            // dispatch
+            if (type === "from") {
+              dispatch(selectorChange({ dateFrom: datevalue }));
+            } else {
+              dispatch(selectorChange({ dateTo: datevalue }));
+            }
+
+            onOk(null);
           }}
         >
           <Text style={ss.textBlue}>ตกลง</Text>
@@ -119,6 +142,7 @@ const PickerDate = (props) => {
       {/* </View> */}
     </View>
   );
-};
+});
 
-export default PickerDate;
+BWPickerDate.displayName = "BWPickerDate";
+export default BWPickerDate;

@@ -14,9 +14,9 @@ const AndroidPickerTimeHour = memo(
 
     useEffect(() => {
       try {
-        console.log(
-          `AndroidPickerTimeHour.useEffect[dateindex] hourindex: ${hourindex} `,
-        );
+        // console.log(
+        //   `AndroidPickerTimeHour.useEffect[dateindex] hourindex: ${hourindex} `,
+        // );
 
         scrollToIndex(hourindex);
       } catch (error) {
@@ -40,12 +40,12 @@ const AndroidPickerTimeHour = memo(
         const y = event.nativeEvent.contentOffset.y;
         const index = Math.round(y / itemHeight);
 
-        console.log("");
-        console.log(
-          `===========> AndroidPickerTimeHour.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
-            scrollY,
-          )} `,
-        );
+        // console.log("");
+        // console.log(
+        //   `===========> AndroidPickerTimeHour.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+        //     scrollY,
+        //   )} `,
+        // );
 
         canMomentum.current = false;
         onIndexChanged(index);
@@ -101,7 +101,7 @@ const AndroidPickerTimeHour = memo(
 
     const scrollToIndex = (index) => {
       if (index && hourFlatlistRef.current.scrollToIndex) {
-        console.log(`===========> Hour. scrollToIndex index: ${index}`);
+        // console.log(`===========> Hour. scrollToIndex index: ${index}`);
         window.setTimeout(() => {
           hourFlatlistRef.current.scrollToIndex({
             animated: true,

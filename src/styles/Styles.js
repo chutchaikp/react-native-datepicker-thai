@@ -18,9 +18,13 @@ export const ss = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     gap: 10,
+    marginTop: 20,
   },
   viewCenter: {
     // flex: 1,
+    backgroundColor: "white",
+    alignSelf: "stretch",
+    height: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -149,6 +153,20 @@ export const ssModal = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+
+  btnNormal: {
+    borderColor: "blue",
+    borderWidth: 1,
+    borderRadius: 10,
+    height: 30,
+    width: 100,
+  },
+  btnPress: {
+    borderColor: "red",
+    borderWidth: 1,
+    height: 30,
+    width: 100,
   },
 });
 

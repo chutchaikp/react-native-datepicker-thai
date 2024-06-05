@@ -7,7 +7,7 @@ const DAYS = ["", "", "", ...y, "", "", ""];
 
 const AndroidPickerDay = memo(
   ({ onIndexChanged, itemHeight, fontSize, dateindex }) => {
-    console.log("AndroidPickerDay - rendering...");
+    // console.log("AndroidPickerDay - rendering...");
 
     const dayFlatlistRef = useRef();
 
@@ -17,9 +17,9 @@ const AndroidPickerDay = memo(
 
     useEffect(() => {
       try {
-        console.log(
-          `AndroidPickerDay.useEffect[dateindex] dateindex: ${dateindex} `,
-        );
+        // console.log(
+        //   `AndroidPickerDay.useEffect[dateindex] dateindex: ${dateindex} `,
+        // );
 
         scrollToIndex(dateindex);
       } catch (error) {
@@ -42,12 +42,12 @@ const AndroidPickerDay = memo(
       const y = event.nativeEvent.contentOffset.y;
       const index = Math.round(y / itemHeight);
 
-      console.log("");
-      console.log(
-        `===========> AndroidPickerDay.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
-          scrollY,
-        )} `,
-      );
+      // console.log("");
+      // console.log(
+      //   `===========> AndroidPickerDay.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+      //     scrollY,
+      //   )} `,
+      // );
 
       canMomentum.current = false;
       onIndexChanged(index);
@@ -101,7 +101,7 @@ const AndroidPickerDay = memo(
     const scrollToIndex = (index) => {
       if (index && dayFlatlistRef.current.scrollToIndex) {
         window.setTimeout(() => {
-          console.log(`===========> Date. scrollToIndex index: ${index}`);
+          // console.log(`===========> Date. scrollToIndex index: ${index}`);
           dayFlatlistRef.current.scrollToIndex({
             animated: true,
             index: index,

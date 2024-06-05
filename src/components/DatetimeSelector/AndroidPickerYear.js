@@ -8,7 +8,7 @@ const YEARS = ["", "", "", ...y, "", "", ""];
 
 const AndroidPickerYear = memo(
   ({ onIndexChanged, itemHeight, fontSize, yearindex }) => {
-    console.log("AndroidPickerYear - rendering...");
+    // console.log("AndroidPickerYear - rendering...");
 
     const yearFlatlistRef = useRef();
 
@@ -17,9 +17,9 @@ const AndroidPickerYear = memo(
 
     useEffect(() => {
       try {
-        console.log(
-          `AndroidPickerYear.useEffect[dateindex] dateindex: ${yearindex} `,
-        );
+        // console.log(
+        //   `AndroidPickerYear.useEffect[dateindex] dateindex: ${yearindex} `,
+        // );
 
         // const _year = date.getFullYear();
         // if (_year !== year) {
@@ -49,7 +49,7 @@ const AndroidPickerYear = memo(
         //console.log('scroll to index called !');
 
         window.setTimeout(() => {
-          console.log(`===========> Year. scrollToIndex index: ${index}`);
+          // console.log(`===========> Year. scrollToIndex index: ${index}`);
           yearFlatlistRef.current.scrollToIndex({
             animated: true,
             index: index,
@@ -71,12 +71,12 @@ const AndroidPickerYear = memo(
       const y = event.nativeEvent.contentOffset.y;
       const index = Math.round(y / itemHeight);
 
-      console.log("");
-      console.log(
-        `AndroidPickerYear.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
-          scrollY,
-        )} `,
-      );
+      // console.log("");
+      // console.log(
+      //   `AndroidPickerYear.momentumScrollEnd(event) index: ${index} scrollY: ${JSON.stringify(
+      //     scrollY,
+      //   )} `,
+      // );
 
       canMomentum.current = false;
       onIndexChanged(index);

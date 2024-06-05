@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
 import { ss } from "../styles/Styles";
-import BWTimeModal from "./BWTimeModal";
-import BWDateModal from "./BWDateModal";
+import BWModalTime from "./BWModalTime";
+import BWDateModal from "./BWModalDate";
 
 const BWDatetimeSelectorApp = () => {
   return (
@@ -10,18 +10,21 @@ const BWDatetimeSelectorApp = () => {
       <Text>BWDatetimeSelectorApp</Text>
 
       <View style={ss.viewColumn}>
-        <BWDateModal />
-        <BWTimeModal />
+        <BWDateModal type="from" />
+        {/* <BWModalTime /> */}
+
         {/* <BWDateModal /> */}
         {/* <View style={{ backgroundColor: "yellow" }}>
           <BWDateModal />
           <BWTimeModal />
         </View> */}
       </View>
+
+      <View style={ss.viewColumn}>
+        <BWDateModal type="to" />
+      </View>
     </View>
   );
 };
 
 export default BWDatetimeSelectorApp;
-
-// const styles = StyleSheet.create({});

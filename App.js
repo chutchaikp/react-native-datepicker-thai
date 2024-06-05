@@ -8,8 +8,8 @@ import {
   View,
 } from "react-native";
 
-import PickerDate from "./src/PickerDate";
-import PickerTime from "./src/PickerTime";
+import BWPickerDate from "./src/debugs/BWPickerDate.js";
+import BWPickerTime from "./src/debugs/BWPickerTime.js";
 // import LifeCycleApp from "./src/debugs/LifeCycleApp.js";
 
 import { ss } from "./src/styles/Styles.js";
@@ -18,25 +18,32 @@ import { ss } from "./src/styles/Styles.js";
 // import BWRefs from "./src/components/refs/BWRefs.js";
 // import TimerApp from "./src/debugs/TimerApp.js";
 // import BWModalApp from "./src/debugs/BWModalApp.js";
-// import BWDatetimeSelectorApp from "./src/debugs/BWDatetimeSelectorApp.js";
+import BWDatetimeSelectorApp from "./src/debugs/BWDatetimeSelectorApp.js";
 // import LifeCycle2App from "./src/debugs/LifeCycle2App.js";
 // import SwitchApp from "./src/components/switch/SwitchApp.js";
 import BWMoment from "./src/components/moment/BWMoment.js";
+
+import { store } from "./src/redux/store.js";
+import { Provider } from "react-redux";
+import ReduxApp from "./src/components/ReduxApp/ReduxApp.js";
 
 const App = () => {
   const [onleft, setOnleft] = useState(false);
 
   return (
-    <View style={{ ...ss.viewFull, backgroundColor: "#1f1f1f" }}>
-      {/* <LifeCycleApp /> */}
-      {/* <LifeCycle2App /> */}
-      {/* <TimerApp /> */}
-      {/* <BWModalApp /> */}
-      {/* <BWDatetimeSelectorApp /> */}
+    <Provider store={store}>
+      <View style={{ ...ss.viewFull, backgroundColor: "#1f1f1f" }}>
+        {/* <LifeCycleApp /> */}
+        {/* <LifeCycle2App /> */}
+        {/* <TimerApp /> */}
+        {/* <BWModalApp /> */}
+        {/* <BWRefs /> */}
+        {/* <BWMoment /> */}
 
-      {/* <BWRefs /> */}
-      <BWMoment />
-    </View>
+        {/* <ReduxApp /> */}
+        <BWDatetimeSelectorApp />
+      </View>
+    </Provider>
   );
 };
 
@@ -81,7 +88,7 @@ const App1 = () => {
         )}
       </View>
 
-      <PickerDate
+      <BWPickerDate
         showdate={showdate}
         onOk={(val) => {
           try {
@@ -107,7 +114,7 @@ const App1 = () => {
         }}
       />
 
-      <PickerTime
+      <BWPickerTime
         showtime={showtime}
         onOk={(val) => {
           let _datevalue = datevalue || new Date();

@@ -6,7 +6,7 @@ const y = _.range(1, 32);
 const DAYS = ["", "", "", ...y, "", "", ""];
 
 const AndroidPickerDebug = ({ onIndexChanged, itemHeight, fontSize, date }) => {
-  console.log("AndroidPickerDebug - render...");
+  // console.log("AndroidPickerDebug - render...");
 
   //   const {items, onIndexChange, itemHeight} = props;
   const [items] = useState(DAYS);

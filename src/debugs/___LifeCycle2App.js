@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { ss } from "../styles/Styles";
+import { ss } from "../styles/Styles.js";
 import { _info } from "../utils/utils.js";
 import { _log } from "../utils/utils.js";
 
