@@ -22,6 +22,7 @@ import BWDatetimeSelectorApp from "./src/debugs/BWDatetimeSelectorApp.js";
 // import LifeCycle2App from "./src/debugs/LifeCycle2App.js";
 // import SwitchApp from "./src/components/switch/SwitchApp.js";
 import BWMoment from "./src/components/moment/BWMoment.js";
+import BWUseEffectApp from "./src/components/useeffect/BWUseEffectApp.js";
 
 import { store } from "./src/redux/store.js";
 import { Provider } from "react-redux";
@@ -41,7 +42,9 @@ const App = () => {
         {/* <BWMoment /> */}
 
         {/* <ReduxApp /> */}
-        <BWDatetimeSelectorApp />
+        {/* <BWDatetimeSelectorApp /> */}
+
+        <BWUseEffectApp />
       </View>
     </Provider>
   );
