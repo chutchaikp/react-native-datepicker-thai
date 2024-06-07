@@ -27,13 +27,16 @@ import BWUseEffectApp from "./src/components/useeffect/BWUseEffectApp.js";
 import { store } from "./src/redux/store.js";
 import { Provider } from "react-redux";
 import ReduxApp from "./src/components/ReduxApp/ReduxApp.js";
+import BWModal from "./src/components/modal/BWModal.js";
+import FlatlistApp from "./src/components/FlatlistApp/FlatlistApp.js";
+import CustomlistApp from "./src/components/CustomlistApp/CustomlistApp.js";
 
 const App = () => {
   const [onleft, setOnleft] = useState(false);
 
   return (
     <Provider store={store}>
-      <View style={{ ...ss.viewFull, backgroundColor: "#1f1f1f" }}>
+      <View style={{ ...ss.viewFull, backgroundColor: "#1f1f1f41" }}>
         {/* <LifeCycleApp /> */}
         {/* <LifeCycle2App /> */}
         {/* <TimerApp /> */}
@@ -41,10 +44,14 @@ const App = () => {
         {/* <BWRefs /> */}
         {/* <BWMoment /> */}
 
-        {/* <ReduxApp /> */}
         {/* <BWDatetimeSelectorApp /> */}
+        {/* <BWUseEffectApp /> */}
+        {/* <BWModal /> */}
 
-        <BWUseEffectApp />
+        {/* <ReduxApp /> */}
+        {/* <FlatlistApp /> */}
+
+        <CustomlistApp />
       </View>
     </Provider>
   );

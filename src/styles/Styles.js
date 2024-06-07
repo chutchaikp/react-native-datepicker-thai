@@ -36,6 +36,13 @@ export const ss = StyleSheet.create({
     position: "absolute",
     top: 5,
   },
+  viewItem: {
+    display: "flex",
+    flexDirection: "row",
+    padding: 3,
+    backgroundColor: "white",
+    margin: 5,
+  },
   button: {
     display: "flex",
     flexDirection: "row",
@@ -47,9 +54,9 @@ export const ss = StyleSheet.create({
     backgroundColor: "#fff",
     // borderWidth: 3,
     // borderColor: "#02856b",
-    borderWidth: 2,
+    borderWidth: 5,
     borderColor: "#666666",
-    height: 40,
+    // height: 40,
   },
   // button color: white: background: blue
   buttonBlue: {
@@ -89,6 +96,18 @@ export const ss = StyleSheet.create({
   },
   textResult: {
     color: "#000000ff",
+    fontSize: 20,
+  },
+  text: {
+    color: "#333333",
+    fontSize: 20,
+  },
+  text333: {
+    color: "#333333",
+    fontSize: 20,
+  },
+  text666: {
+    color: "#666666",
     fontSize: 20,
   },
 });
