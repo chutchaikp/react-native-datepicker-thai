@@ -31,12 +31,14 @@ import BWModal from "./src/components/modal/BWModal.js";
 import FlatlistApp from "./src/components/FlatlistApp/FlatlistApp.js";
 import CustomlistApp from "./src/components/CustomlistApp/CustomlistApp.js";
 
+import BWChartApp from "./src/components/BWChart/BWChartApp.js";
+
 const App = () => {
   const [onleft, setOnleft] = useState(false);
 
   return (
     <Provider store={store}>
-      <View style={{ ...ss.viewFull, backgroundColor: "#1f1f1f41" }}>
+      <View style={{ margin: 0, padding: 0, alignSelf: "stretch" }}>
         {/* <LifeCycleApp /> */}
         {/* <LifeCycle2App /> */}
         {/* <TimerApp /> */}
@@ -51,7 +53,9 @@ const App = () => {
         {/* <ReduxApp /> */}
         {/* <FlatlistApp /> */}
 
-        <CustomlistApp />
+        {/* <CustomlistApp /> */}
+
+        <BWChartApp />
       </View>
     </Provider>
   );
