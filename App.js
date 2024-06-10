@@ -50,12 +50,12 @@ const App = () => {
         {/* <BWUseEffectApp /> */}
         {/* <BWModal /> */}
 
-        {/* <ReduxApp /> */}
+        <ReduxApp />
         {/* <FlatlistApp /> */}
 
         {/* <CustomlistApp /> */}
 
-        <BWChartApp />
+        {/* <BWChartApp /> */}
       </View>
     </Provider>
   );
