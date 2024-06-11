@@ -32,6 +32,7 @@ import FlatlistApp from "./src/components/FlatlistApp/FlatlistApp.js";
 import CustomlistApp from "./src/components/CustomlistApp/CustomlistApp.js";
 
 import BWChartApp from "./src/components/BWChart/BWChartApp.js";
+import GradientApp from "./src/components/GradientApp/GradientApp.js";
 
 const App = () => {
   const [onleft, setOnleft] = useState(false);
@@ -50,12 +51,11 @@ const App = () => {
         {/* <BWUseEffectApp /> */}
         {/* <BWModal /> */}
 
-        <ReduxApp />
+        {/* <ReduxApp /> */}
         {/* <FlatlistApp /> */}
-
         {/* <CustomlistApp /> */}
-
         {/* <BWChartApp /> */}
+        <GradientApp />
       </View>
     </Provider>
   );

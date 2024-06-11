@@ -19,9 +19,25 @@ const Footer = () => {
     console.log(JSON.stringify(data));
   }, [data]);
 
+  useEffect(() => {
+    console.log(` error: ${error} loading: ${loading} data: ${data} `);
+  }, [data, loading, error]);
+
   const handleMe = () => {
-    console.log("handleme");
-    dispatch(fetchUserData());
+    // console.log("handleme");
+    // resultAction
+
+    dispatch(fetchUserData())
+      .unwrap()
+      .then((originalPromiseResult) => {
+        // handle result here
+        // originalPromiseResult
+        console.log("if done ======> ", originalPromiseResult);
+      })
+      .catch((rejectedValueOrSerializedError) => {
+        // handle error here
+        console.log("if catch");
+      });
   };
 
   return (
