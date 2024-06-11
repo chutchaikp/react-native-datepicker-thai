@@ -19,6 +19,7 @@ import { decrement, increment, selectCount } from "../../redux/counterSlice";
 import { ss } from "../../styles/Styles";
 
 const ReduxApp = () => {
+  console.log("ReduxApp - render");
   const count = useSelector(selectCount);
   const dispatch = useDispatch();
 
@@ -31,7 +32,7 @@ const ReduxApp = () => {
       <View style={ssRedux.viewRow}>
         <Text>ReduxApp</Text>
         <Text>Redux Example</Text>
-        <Text style={ssRedux.textCounter}>Count: {count}</Text>
+        <Text>Count: {count}</Text>
 
         <Button
           color={"#019199"}

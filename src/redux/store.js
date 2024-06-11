@@ -5,6 +5,8 @@ import dateSelectorReducer from "./dateSelectorSlice";
 import personReducer from "./personSlice";
 import { useDispatch } from "react-redux";
 
+export const useAppDispatch = () => useDispatch();
+
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
